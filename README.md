@@ -1,75 +1,134 @@
-# React + TypeScript + Vite
+# Pupilovo 🐾
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern headless e-commerce platform for pet products.
 
-Currently, two official plugins are available:
+Pupilovo is a real-world pet store project built with a modern frontend architecture. The project is designed to provide a fast, responsive and maintainable shopping experience while using WordPress and WooCommerce as the backend and content management system.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+### Frontend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* React
+* TypeScript
+* Vite
+* SCSS
+* Custom component system
 
-## Expanding the ESLint configuration
+### Backend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* WordPress
+* WooCommerce
+* WooCommerce REST API
+* MySQL
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Infrastructure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* Docker
+* Docker Compose
+* Git
+* GitHub
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Architecture
 
+```text
+React + TypeScript
+        │
+        │ WooCommerce REST API
+        ▼
+WordPress + WooCommerce
+        │
+        ▼
+      MySQL
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+The frontend is completely separated from the WordPress presentation layer. WordPress and WooCommerce are used as the CMS and e-commerce backend, while React provides the customer-facing storefront.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Project Structure
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+Pupilovo/
+├── frontend/
+│   └── src/
+│       ├── api/
+│       ├── assets/
+│       ├── components/
+│       ├── context/
+│       ├── hooks/
+│       ├── layouts/
+│       ├── pages/
+│       ├── styles/
+│       └── types/
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── .gitignore
+└── README.md
 ```
+
+## Development
+
+The entire development environment runs with Docker Compose.
+
+Start the application:
+
+```bash
+docker compose up -d
+```
+
+Frontend:
+
+```text
+http://localhost:5173
+```
+
+WordPress:
+
+```text
+http://localhost:8080
+```
+
+Stop the environment:
+
+```bash
+docker compose down
+```
+
+## Development Workflow
+
+The project uses a feature-branch workflow:
+
+```text
+main
+  │
+  ├── feature/header
+  ├── feature/homepage
+  ├── feature/shop
+  ├── feature/product
+  ├── feature/cart
+  └── feature/checkout
+```
+
+Each feature is developed on a separate branch and merged into `main` through a Pull Request.
+
+## Design Goals
+
+Pupilovo is being developed as a real e-commerce platform with a focus on:
+
+* modern and responsive UI
+* clean component architecture
+* reusable React components
+* separation of frontend and backend
+* maintainable SCSS architecture
+* good performance
+* mobile-first experience
+* scalable WooCommerce integration
+
+## Status
+
+🚧 **In active development**
+
+The initial project infrastructure and frontend foundation are in place. The storefront is currently being built component by component.
+
+## License
+
+This project is currently private in terms of commercial use. The source code is maintained as part of the Pupilovo project and portfolio.
