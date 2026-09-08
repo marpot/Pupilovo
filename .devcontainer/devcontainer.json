@@ -1,0 +1,21 @@
+{
+  "name": "Pupilovo Dev",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/workspace/Pupilovo",
+  "shutdownAction": "none",
+  "forwardPorts": [
+    5173,
+    8080
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "remoteUser": "node"
+}

@@ -1,6 +1,10 @@
-@use './variables' as *;
-@use './global';
+@use '@/styles/variables' as *;
+@use '@/styles/global';
 
 .app {
   min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
 }
