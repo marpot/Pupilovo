@@ -1,0 +1,78 @@
+@use '@/styles/variables' as *;
+
+.header {
+  width: 100%;
+  border-bottom: 1px solid #e9e9e9;
+  background: $color-background;
+
+  &__container {
+    width: min(100% - 32px, $container-width);
+    min-height: 72px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  &__logo {
+    color: $color-primary;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    a {
+      color: $color-text;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    a,
+    button {
+      display: grid;
+      place-items: center;
+      padding: 6px;
+
+      border: 0;
+      background: transparent;
+      color: $color-text;
+      font-size: 1.15rem;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__container {
+      min-height: 64px;
+      gap: 16px;
+    }
+
+    &__nav {
+      display: none;
+    }
+  }
+}
