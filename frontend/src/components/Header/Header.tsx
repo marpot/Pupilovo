@@ -5,7 +5,8 @@ function Header() {
     <header className="header">
       <div className="header__container">
         <a href="#home" className="header__logo">
-          Pupilovo
+          <img src="/Pupilovo.svg" alt="" aria-hidden="true" />
+          
         </a>
 
         <nav className="header__nav" aria-label="Główna nawigacja">

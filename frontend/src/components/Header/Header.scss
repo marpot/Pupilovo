@@ -15,7 +15,7 @@
 
   &__container {
     width: min(100% - 40px, $container-width);
-    min-height: 78px;
+    min-height: 92px;
     margin: 0 auto;
 
     display: flex;
@@ -26,17 +26,26 @@
   }
 
   &__logo {
-    color: $color-primary;
+    display: inline-flex;
+    align-items: center;
 
-    font-size: 1.65rem;
-    font-weight: 900;
-    letter-spacing: -0.05em;
+    padding-top: 4px;
+    padding-bottom: 8px;
 
     text-decoration: none;
 
     transition:
       transform 0.2s ease,
       opacity 0.2s ease;
+
+    img {
+      display: block;
+
+      width: 105px;
+      height: 84px;
+
+      object-fit: contain;
+    }
 
     &:hover {
       transform: translateY(-1px);
@@ -142,11 +151,21 @@
   @media (max-width: 768px) {
     &__container {
       width: min(100% - 24px, $container-width);
-      min-height: 68px;
+      min-height: 76px;
     }
 
     &__nav {
       display: none;
+    }
+
+    &__logo {
+      padding-top: 2px;
+      padding-bottom: 6px;
+
+      img {
+        width: 82px;
+        height: 68px;
+      }
     }
   }
 }
