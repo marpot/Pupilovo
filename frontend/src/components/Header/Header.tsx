@@ -1,19 +1,23 @@
 import '@/components/Header/Header.scss'
 
 function Header() {
+  const isShopPage = window.location.pathname === '/shop'
+  const homeHref = isShopPage ? '/#home' : '#home'
+  const categoriesHref = isShopPage ? '/#categories' : '#categories'
+  const shopHref = isShopPage ? '/#shop' : '#shop'
+
   return (
     <header className="header">
       <div className="header__container">
-        <a href="#home" className="header__logo">
+        <a href={homeHref} className="header__logo">
           <img src="/Pupilovo.svg" alt="" aria-hidden="true" />
         </a>
 
         <nav className="header__nav" aria-label="Główna nawigacja">
-          <a href="#home">Strona główna</a>
-          <a href="/shop">Sklep</a>
-          <a href="#categories">Kategorie</a>
-          <a href="#products">Produkty</a>
-          <a href="#about">O nas</a>
+          <a href={homeHref}>Strona główna</a>
+          <a href={categoriesHref}>Kategorie</a>
+          <a href={shopHref}>Sklep</a>
+          <a href={isShopPage ? '/#about' : '#about'}>O nas</a>
         </nav>
 
         <div className="header__actions">

@@ -2,7 +2,7 @@ import '@/components/Hero/Hero.scss'
 
 function Hero() {
   return (
-    <section className="hero">
+    <section id="home" className="hero">
       <div className="hero__container">
         <div className="hero__content">
           <span className="hero__eyebrow">Pupilovo — dla Twojego pupila</span>
@@ -18,11 +18,11 @@ function Hero() {
           </p>
 
           <div className="hero__actions">
-            <a href="/shop" className="hero__button hero__button--primary">
+            <a href="#shop" className="hero__button hero__button--primary">
               Przejdź do sklepu
             </a>
 
-            <a href="/categories" className="hero__button hero__button--secondary">
+            <a href="#categories" className="hero__button hero__button--secondary">
               Zobacz kategorie
             </a>
           </div>

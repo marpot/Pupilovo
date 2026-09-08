@@ -29,7 +29,7 @@ const categories = [
 
 function CategorySection() {
   return (
-    <section className="category-section">
+    <section id="categories" className="category-section">
       <div className="category-section__container">
         <div className="category-section__header">
           <div>

@@ -1,8 +1,14 @@
 @use '@/styles/variables' as *;
 
 .category-section {
+  display: flex;
+  align-items: center;
+
+  min-height: calc(100vh - 92px);
+  min-height: calc(100svh - 92px);
   padding: 96px 0;
   background: #f8f8f6;
+  scroll-margin-top: 92px;
 
   &__container {
     width: min(100% - 32px, $container-width);
@@ -171,7 +177,10 @@
 
 @media (max-width: 600px) {
   .category-section {
+    min-height: calc(100vh - 76px);
+    min-height: calc(100svh - 76px);
     padding: 64px 0;
+    scroll-margin-top: 76px;
 
     &__header {
       align-items: flex-start;
