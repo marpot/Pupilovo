@@ -1,0 +1,133 @@
+@use '@/styles/variables' as *;
+
+.hero {
+  padding: 72px 0;
+
+  &__container {
+    width: min(100% - 32px, $container-width);
+    min-height: 520px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 48px;
+  }
+
+  &__content {
+    max-width: 600px;
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: 20px;
+
+    color: $color-primary;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__title {
+    margin: 0;
+
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+
+    span {
+      display: block;
+      color: $color-primary;
+    }
+  }
+
+  &__description {
+    max-width: 520px;
+    margin: 24px 0 32px;
+
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  &__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+    padding: 0 24px;
+
+    border-radius: $radius-md;
+
+    font-weight: 700;
+    text-decoration: none;
+
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
+
+    &--primary {
+      background: $color-primary;
+      color: white;
+    }
+
+    &--secondary {
+      border: 1px solid #ddd;
+      color: $color-text;
+    }
+  }
+
+  &__image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 48px 0;
+
+    &__container {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      text-align: center;
+    }
+
+    &__content {
+      margin: 0 auto;
+    }
+
+    &__description {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &__actions {
+      justify-content: center;
+    }
+
+    &__image {
+      order: -1;
+    }
+  }
+}
