@@ -6,7 +6,6 @@ function Header() {
       <div className="header__container">
         <a href="#home" className="header__logo">
           <img src="/Pupilovo.svg" alt="" aria-hidden="true" />
-          
         </a>
 
         <nav className="header__nav" aria-label="Główna nawigacja">
@@ -36,4 +35,3 @@ function Header() {
 }
 
 export default Header
-
