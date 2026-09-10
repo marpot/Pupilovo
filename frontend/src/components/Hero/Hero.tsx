@@ -1,7 +1,22 @@
 import '@/components/Hero/Hero.scss'
-import { Link } from 'react-router-dom'
+import type { MouseEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import ScrollArrow from '@/components/ScrollArrow/ScrollArrow'
 
 function Hero() {
+  const navigate = useNavigate()
+
+  const handleShopClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    navigate('/shop')
+    requestAnimationFrame(() => {
+      document.getElementById('shop')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
+  }
+
   return (
     <section id="home" className="hero">
       <div className="hero__container">
@@ -19,19 +34,25 @@ function Hero() {
           </p>
 
           <div className="hero__actions">
-            <Link to="/shop" className="hero__button hero__button--primary">
+            <Link
+              to="/shop"
+              onClick={handleShopClick}
+              className="hero__button hero__button--primary"
+            >
               Przejdź do sklepu
             </Link>
           </div>
         </div>
 
         <div className="hero__image">
-          <img src="/src/assets/hero.png" alt="Pupilovo" />
+          {/* Ścieżka bezpośrednio do folderu public */}
+          <img src="/assets/hero.png" alt="Pupilovo" />
         </div>
+
+        <ScrollArrow targetId="about" />
       </div>
     </section>
   )
 }
 
 export default Hero
-

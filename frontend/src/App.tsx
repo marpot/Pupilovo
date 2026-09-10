@@ -9,6 +9,7 @@ function Home() {
   return (
     <>
       <Hero />
+      <About />
       <Shop />
     </>
   )
@@ -22,8 +23,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/shop" element={<Home />} />
+          <Route path="/about" element={<Home />} />
         </Routes>
       </div>
     </BrowserRouter>
