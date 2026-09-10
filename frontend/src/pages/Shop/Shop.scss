@@ -1,0 +1,40 @@
+@use '@/styles/variables' as *;
+
+.shop {
+	display: flex;
+	flex-direction: column;
+
+	min-height: calc(100vh - 92px);
+	min-height: calc(100svh - 92px);
+
+	scroll-margin-top: 92px;
+
+	&__hero {
+		display: flex;
+		align-items: center;
+
+		min-height: 52vh;
+	}
+
+	&__container {
+		width: min(100% - 32px, $container-width);
+		margin: 0 auto;
+	}
+
+	&__products {
+		flex: 1;
+	}
+}
+
+@media (max-width: 600px) {
+	.shop {
+		min-height: calc(100vh - 76px);
+		min-height: calc(100svh - 76px);
+
+		scroll-margin-top: 76px;
+
+		&__hero {
+			min-height: 48vh;
+		}
+	}
+}
