@@ -9,7 +9,7 @@ const products = [
   {
     name: 'Miska spowalniająca Pupilovo',
     price: '59,90 zł',
-    image: '/hero.png',
+    image: '/assets/hero.png',
     description:
       'Pomaga spowolnić jedzenie i wspiera zdrowe nawyki Twojego pupila.',
     category: 'psy',
@@ -17,7 +17,7 @@ const products = [
   {
     name: 'Mata węchowa Pupilovo',
     price: '79,90 zł',
-    image: '/hero.png',
+    image: '/assets/hero.png',
     description:
       'Zabawa, która angażuje naturalny węch i zapewnia psu dodatkową aktywność.',
     category: 'psy',
@@ -25,7 +25,7 @@ const products = [
   {
     name: 'Zabawka interaktywna Pupilovo',
     price: '49,90 zł',
-    image: '/hero.png',
+    image: '/assets/hero.png',
     description:
       'Pomaga zapewnić pupilowi zajęcie i rozwijać jego naturalną ciekawość.',
     category: 'koty',
@@ -33,7 +33,7 @@ const products = [
   {
     name: 'Szczotka pielęgnacyjna Pupilovo',
     price: '39,90 zł',
-    image: '/hero.png',
+    image: '/assets/hero.png',
     description:
       'Delikatna pielęgnacja sierści i przyjemny masaż podczas codziennego czesania.',
     category: 'koty',
