@@ -5,25 +5,24 @@ const categories = [
     name: 'Psy',
     description: 'Karma, przysmaki i akcesoria',
     image: '/categories/dog.jpg',
-    href: '/categories/psy',
+    href: '/shop?category=psy',
   },
   {
     name: 'Koty',
     description: 'Wszystko dla kocich potrzeb',
     image: '/categories/cat.jpg',
-    href: '/categories/koty',
+    href: '/shop?category=koty',
   },
   {
     name: 'Gryzonie',
     description: 'Produkty dla małych pupili',
     image: '/categories/rodent.jpg',
-    href: '/categories/gryzonie',
+    href: '/shop?category=gryzonie',
   },
   {
     name: 'Ptaki',
     description: 'Pokarm i akcesoria dla ptaków',
-    image: '/categories/bird.jpg',
-    href: '/categories/ptaki',
+    image: '/shop?category=ptaki',
   },
 ]
 
@@ -41,11 +40,6 @@ function CategorySection() {
               Wybierz coś dla swojego pupila
             </h2>
           </div>
-
-          <a href="/categories" className="category-section__link">
-            Zobacz wszystkie
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
 
         <div className="category-section__grid">

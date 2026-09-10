@@ -21,10 +21,6 @@ function Hero() {
             <a href="#shop" className="hero__button hero__button--primary">
               Przejdź do sklepu
             </a>
-
-            <a href="#categories" className="hero__button hero__button--secondary">
-              Zobacz kategorie
-            </a>
           </div>
         </div>
 
@@ -37,3 +33,4 @@ function Hero() {
 }
 
 export default Hero
+

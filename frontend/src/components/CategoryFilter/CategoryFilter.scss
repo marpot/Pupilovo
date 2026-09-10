@@ -1,0 +1,63 @@
+@use '@/styles/variables' as *;
+
+.category-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  &__label {
+    color: #737373;
+
+    font-size: 0.82rem;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
+  select {
+    min-width: 190px;
+    padding: 10px 36px 10px 16px;
+
+    border: 1px solid #deded8;
+    border-radius: 999px;
+
+    background: #ffffff;
+    color: $color-text;
+
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover,
+    &:focus {
+      border-color: $color-primary;
+      color: $color-primary;
+      outline: none;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgb(46 125 50 / 10%);
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .category-filter {
+    flex: 1;
+
+    &__label {
+      display: none;
+    }
+
+    select {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}

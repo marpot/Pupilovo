@@ -1,6 +1,5 @@
 import Header from '@/components/Header/Header'
 import Hero from '@/components/Hero/Hero'
-import CategorySection from '@/components/CategorySection/CategorySection'
 import Shop from '@/pages/Shop/Shop'
 
 function App() {
@@ -21,7 +20,6 @@ function App() {
 
       <main>
         <Hero />
-        <CategorySection />
         <Shop />
       </main>
     </div>
