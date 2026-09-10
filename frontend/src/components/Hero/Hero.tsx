@@ -1,4 +1,5 @@
 import '@/components/Hero/Hero.scss'
+import { Link } from 'react-router-dom'
 
 function Hero() {
   return (
@@ -18,9 +19,9 @@ function Hero() {
           </p>
 
           <div className="hero__actions">
-            <a href="#shop" className="hero__button hero__button--primary">
+            <Link to="/shop" className="hero__button hero__button--primary">
               Przejdź do sklepu
-            </a>
+            </Link>
           </div>
         </div>
 
