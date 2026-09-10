@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 import '@/pages/Shop/Shop.scss'
 import CategoryFilter from '@/components/CategoryFilter/CategoryFilter'
@@ -40,27 +40,17 @@ const products = [
 ]
 
 function Shop() {
-  const searchParams = new URLSearchParams(window.location.search)
-  const categoryFromUrl = searchParams.get('category') || 'all'
+  const [searchParams, setSearchParams] = useSearchParams()
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryFromUrl)
+  const selectedCategory = searchParams.get('category') || 'all'
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category)
-
-    const params = new URLSearchParams(window.location.search)
-
     if (category === 'all') {
-      params.delete('category')
-    } else {
-      params.set('category', category)
+      setSearchParams({})
+      return
     }
 
-    const queryString = params.toString()
-    const newUrl = queryString ? `/shop?${queryString}` : '/shop'
-
-    window.history.pushState({}, '', newUrl)
-    window.dispatchEvent(new Event('locationchange'))
+    setSearchParams({ category })
   }
 
   const filteredProducts =
@@ -81,9 +71,7 @@ function Shop() {
                 onChange={handleCategoryChange}
               />
 
-              <button type="button">
-                Sortuj
-              </button>
+              <button type="button">Sortuj</button>
             </div>
           </div>
 

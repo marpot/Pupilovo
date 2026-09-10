@@ -1,36 +1,32 @@
-import { useLayoutEffect } from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import Header from '@/components/Header/Header'
 import Hero from '@/components/Hero/Hero'
 import Shop from '@/pages/Shop/Shop'
+import About from '@/pages/About/About'
+
+function Home() {
+  return (
+    <>
+      <Hero />
+      <Shop />
+    </>
+  )
+}
 
 function App() {
-  const path = window.location.pathname
-
-  useLayoutEffect(() => {
-    if (!window.location.hash) {
-      window.scrollTo(0, 0)
-    }
-  }, [])
-
-  if (path === '/shop') {
-    return (
+  return (
+    <BrowserRouter>
       <div className="app">
         <Header />
-        <Shop />
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </div>
-    )
-  }
-
-  return (
-    <div className="app">
-      <Header />
-
-      <main>
-        <Hero />
-        <Shop />
-      </main>
-    </div>
+    </BrowserRouter>
   )
 }
 
