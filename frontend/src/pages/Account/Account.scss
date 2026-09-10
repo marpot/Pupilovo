@@ -1,0 +1,153 @@
+@use '@/styles/variables' as *;
+
+.account {
+  min-height: calc(100svh - 92px);
+  padding: 64px 0 96px;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbf7 100%);
+  color: $color-text;
+
+  &__container {
+    width: min(100% - 40px, $container-width);
+    margin: 0 auto;
+  }
+
+  &__heading {
+    margin-bottom: 40px;
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      letter-spacing: -0.045em;
+    }
+
+    > p:last-child {
+      color: #686868;
+      line-height: 1.7;
+    }
+  }
+
+  &__eyebrow {
+    margin: 0 0 16px;
+    color: #506b1a;
+    font-size: 0.78rem;
+    font-weight: 750;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+    gap: 48px;
+  }
+
+  &__intro {
+    padding: 40px;
+    border-radius: $radius-lg;
+    background: rgb(107 142 35 / 7%);
+
+    h2 {
+      margin: 24px 0;
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+    }
+
+    p, li {
+      color: #555;
+      line-height: 1.75;
+    }
+
+    ul {
+      margin: 24px 0;
+      padding-left: 20px;
+    }
+
+    li {
+      padding: 6px 0 6px 4px;
+      &::marker { color: $color-primary; }
+    }
+  }
+
+  &__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgb(107 142 35 / 12%);
+    color: #506b1a;
+    font-size: 2.5rem;
+  }
+
+  &__availability { font-size: 0.85rem; }
+
+  &__card {
+    min-width: 0;
+    padding: 40px;
+    border: 1px solid #e5e7dd;
+    border-radius: $radius-lg;
+    background: $color-background;
+    box-shadow: 0 12px 35px rgb(34 34 34 / 5%);
+  }
+
+  &__switch {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    padding: 4px;
+    border-radius: 999px;
+    background: #f4f5ef;
+
+    button {
+      flex: 1;
+      min-height: 44px;
+      padding: 10px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #555;
+      font-weight: 650;
+      cursor: pointer;
+
+      &[aria-pressed='true'] {
+        background: white;
+        color: #506b1a;
+        box-shadow: 0 2px 8px rgb(34 34 34 / 8%);
+      }
+    }
+  }
+
+  button:focus-visible, a:focus-visible {
+    outline: 3px solid $color-primary;
+    outline-offset: 4px;
+  }
+
+  &__preview, &__preview-link {
+    color: #555;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  &__preview-link { display: inline-block; margin-top: 24px; }
+}
+
+@media (max-width: 900px) {
+  .account {
+    &__layout { gap: 24px; grid-template-columns: 1fr 1.2fr; }
+    &__intro, &__card { padding: 24px; }
+  }
+}
+
+@media (max-width: 700px) {
+  .account {
+    padding: 32px 0 64px;
+    min-height: calc(100svh - 76px);
+    &__container { width: min(100% - 32px, $container-width); }
+    &__layout { grid-template-columns: 1fr; }
+    &__card { grid-row: 1; padding: 24px 20px; }
+    &__heading { margin-bottom: 24px; }
+  }
+}

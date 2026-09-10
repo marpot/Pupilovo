@@ -1,0 +1,60 @@
+@use '@/styles/variables' as *;
+
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h2 {
+    margin: 0 0 10px;
+    font-size: 1.7rem;
+    letter-spacing: -0.03em;
+  }
+
+  p { margin: 0; color: #686868; line-height: 1.6; }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label { font-size: 0.9rem; font-weight: 650; }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #c5c8bc;
+      border-radius: $radius-md;
+      background: white;
+      color: $color-text;
+      font-size: 1rem;
+
+      &:focus-visible {
+        outline: 3px solid rgb(107 142 35 / 25%);
+        outline-offset: 2px;
+        border-color: $color-primary;
+      }
+    }
+  }
+
+  &__note, &__status { font-size: 0.85rem; }
+  &__status:empty { display: none; }
+
+  &__submit {
+    min-height: 52px;
+    padding: 12px 24px;
+    border: 0;
+    border-radius: 999px;
+    background: $color-primary;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover { background: #506b1a; }
+    &:focus-visible { outline: 3px solid $color-primary; outline-offset: 4px; }
+  }
+}

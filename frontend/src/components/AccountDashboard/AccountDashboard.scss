@@ -1,0 +1,59 @@
+@use '@/styles/variables' as *;
+
+.account-dashboard {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 32px;
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    button {
+      min-height: 48px;
+      padding: 14px 20px;
+      border: 1px solid #e5e7dd;
+      border-radius: $radius-md;
+      background: white;
+      color: $color-text;
+      text-align: left;
+      cursor: pointer;
+
+      &[aria-current='true'], &:hover:not(:disabled) {
+        background: rgb(107 142 35 / 9%);
+        border-color: $color-primary;
+        color: #506b1a;
+      }
+
+      &:disabled { color: #737373; cursor: not-allowed; }
+      &:focus-visible { outline: 3px solid $color-primary; outline-offset: 3px; }
+    }
+  }
+
+  &__content {
+    min-height: 300px;
+    padding: 32px;
+    border: 1px solid #e5e7dd;
+    border-radius: $radius-lg;
+    background: white;
+    overflow-wrap: anywhere;
+
+    h2 { margin-top: 0; letter-spacing: -0.03em; }
+    p { color: #686868; line-height: 1.7; }
+    dl { display: grid; gap: 12px; margin: 24px 0; }
+    dt { font-size: 0.85rem; font-weight: 650; }
+    dd { margin: 0 0 12px; }
+  }
+
+  &__note { font-size: 0.85rem; }
+}
+
+@media (max-width: 700px) {
+  .account-dashboard {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    &__nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    &__content { padding: 24px; }
+  }
+}
