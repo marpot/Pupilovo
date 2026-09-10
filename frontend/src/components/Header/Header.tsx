@@ -22,15 +22,18 @@ function Header() {
 
         <div className="header__actions">
           <button type="button" aria-label="Szukaj">
-            🔍
+            <span aria-hidden="true">🔍</span>
+            <span>Szukaj</span>
           </button>
 
           <a href="/account" aria-label="Konto">
-            👤
+            <span aria-hidden="true">👤</span>
+            <span>Konto</span>
           </a>
 
           <a href="/cart" aria-label="Koszyk">
-            🛒
+            <span aria-hidden="true">🛒</span>
+            <span>Koszyk</span>
           </a>
         </div>
       </div>
