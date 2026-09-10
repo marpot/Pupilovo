@@ -1,0 +1,60 @@
+.scroll-arrow {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+
+  border: 2px solid #2e7d32;
+  border-radius: 50%;
+
+  background: rgb(250 249 246 / 82%);
+  color: #2e7d32;
+  cursor: pointer;
+
+  box-shadow: 0 6px 16px rgb(46 125 50 / 18%);
+
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  animation: bounce 2s infinite;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  &:hover {
+    border-color: #256628;
+    background-color: #2e7d32;
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgb(46 125 50 / 28%);
+  }
+
+  &:focus-visible {
+    outline: 3px solid rgb(46 125 50 / 35%);
+    outline-offset: 4px;
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-12px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-6px) translateX(-50%);
+  }
+}
