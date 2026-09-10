@@ -23,12 +23,20 @@ const categories = [
   },
 ]
 
-function CategoryFilter() {
+type CategoryFilterProps = {
+  value: string
+  onChange: (value: string) => void
+}
+
+function CategoryFilter({ value, onChange }: CategoryFilterProps) {
   return (
     <label className="category-filter">
       <span className="category-filter__label">Kategoria</span>
 
-      <select defaultValue="all">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+      >
         {categories.map((category) => (
           <option key={category.value} value={category.value}>
             {category.name}

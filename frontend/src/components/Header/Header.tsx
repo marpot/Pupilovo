@@ -1,9 +1,37 @@
+import { useEffect, useState } from 'react'
+
 import '@/components/Header/Header.scss'
 
 function Header() {
+  const [, setLocation] = useState(window.location.href)
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setLocation(window.location.href)
+    }
+
+    window.addEventListener('locationchange', handleLocationChange)
+
+    return () => {
+      window.removeEventListener('locationchange', handleLocationChange)
+    }
+  }, [])
+
   const isShopPage = window.location.pathname === '/shop'
-  const homeHref = isShopPage ? '/#home' : '#home'
-  const shopHref = isShopPage ? '/#shop' : '#shop'
+
+  const currentCategory = new URLSearchParams(
+    window.location.search,
+  ).get('category')
+
+  const homeHref = isShopPage ? '/' : '#home'
+
+  const shopHref = isShopPage
+    ? currentCategory
+      ? `/shop?category=${currentCategory}`
+      : '/shop'
+    : '#shop'
+
+  const aboutHref = isShopPage ? '/#about' : '#about'
 
   return (
     <header className="header">
@@ -15,7 +43,7 @@ function Header() {
         <nav className="header__nav" aria-label="Główna nawigacja">
           <a href={homeHref}>Strona główna</a>
           <a href={shopHref}>Sklep</a>
-          <a href={isShopPage ? '/#about' : '#about'}>O nas</a>
+          <a href={aboutHref}>O nas</a>
         </nav>
 
         <div className="header__actions">
