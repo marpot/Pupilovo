@@ -104,3 +104,30 @@ export async function logoutCustomer(): Promise<void> {
 
   restNonce = null
 }
+
+/** Reuse the cookie/nonce bootstrap for authenticated account API reads. */
+export async function getAccountData<T>(path: string, signal?: AbortSignal): Promise<T> {
+  if (!restNonce) {
+    const session = await getCurrentUser()
+    if (!session.authenticated || !session.nonce) {
+      throw new AuthError('Sesja wygasła. Zaloguj się ponownie.', 'session_expired')
+    }
+  }
+  const response = await fetch(path, {
+    credentials: 'include',
+    headers: { 'X-WP-Nonce': restNonce ?? '' },
+    signal,
+    cache: 'no-store',
+  })
+  const data = await response.json()
+  if (!response.ok) {
+    if (response.status === 401 || response.status === 403) restNonce = null
+    throw new AuthError(
+      response.status === 401 || response.status === 403
+        ? 'Sesja wygasła. Odśwież stronę i zaloguj się ponownie.'
+        : data?.message || 'Nie udało się pobrać danych konta.',
+      typeof data?.code === 'string' ? data.code : 'account_error',
+    )
+  }
+  return data as T
+}

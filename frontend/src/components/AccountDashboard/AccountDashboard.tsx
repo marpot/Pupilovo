@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import OrderHistory from '@/components/OrderHistory/OrderHistory'
+
 import '@/components/AccountDashboard/AccountDashboard.scss'
 
 type AccountDashboardProps = {
@@ -36,7 +38,7 @@ function AccountDashboard({ user, onLogout }: AccountDashboardProps) {
             <p className="account-dashboard__note">Edycja danych będzie dostępna wkrótce.</p>
           </>
         )}
-        {section === 'orders' && <p>Tu znajdziesz historię i status swoich zamówień. Ta sekcja będzie dostępna wkrótce.</p>}
+        {section === 'orders' && <OrderHistory />}
         {section === 'addresses' && <p>Tu zarządzisz adresami dostawy i rozliczeń. Ta sekcja będzie dostępna wkrótce.</p>}
       </section>
     </div>

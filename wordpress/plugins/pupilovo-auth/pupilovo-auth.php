@@ -10,6 +10,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once __DIR__ . '/customer-orders.php';
+
 add_action('rest_api_init', function () {
     register_rest_route('pupilovo/v1', '/auth/register', [
         'methods' => 'POST',
