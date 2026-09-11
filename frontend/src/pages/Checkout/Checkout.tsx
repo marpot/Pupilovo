@@ -5,9 +5,15 @@ import {
 } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import { getCart } from '@/api/cart'
+import {
+  getCart,
+  selectShippingRate,
+  updateCartCustomer,
+  type CartCustomerAddress,
+} from '@/api/cart'
 import { processCheckout } from '@/api/checkout'
 import { formatPrice } from '@/pages/Cart/cartData'
+import type { WooCommerceCart } from '@/types/woocommerce'
 
 import '@/pages/Checkout/Checkout.scss'
 
@@ -40,11 +46,76 @@ function Checkout() {
     useState<CheckoutForm>(initialForm)
 
   const [total, setTotal] = useState(0)
+  const [shippingTotal, setShippingTotal] = useState(0)
+  const [shippingName, setShippingName] =
+    useState<string | null>(null)
+
   const [itemsCount, setItemsCount] = useState(0)
   const [expectedTotal, setExpectedTotal] = useState('')
+
   const [isLoading, setIsLoading] = useState(true)
+  const [isCalculatingShipping, setIsCalculatingShipping] =
+    useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+
   const [error, setError] = useState<string | null>(null)
+
+  const updateSummary = (cart: WooCommerceCart) => {
+    setItemsCount(cart.items_count)
+    setExpectedTotal(cart.totals.total_price)
+    setTotal(Number(cart.totals.total_price))
+    setShippingTotal(
+      Number(cart.totals.total_shipping ?? 0),
+    )
+
+    const selectedRate = cart.shipping_rates
+      .flatMap((shippingPackage) =>
+        shippingPackage.shipping_rates,
+      )
+      .find((rate) => rate.selected)
+
+    setShippingName(selectedRate?.name ?? null)
+  }
+
+  const createAddresses = () => {
+    const billingAddress: CartCustomerAddress = {
+      first_name: form.firstName,
+      last_name: form.lastName,
+      company: '',
+      address_1: form.address,
+      address_2: '',
+      city: form.city,
+      state: '',
+      postcode: form.postcode,
+      country: 'PL',
+      email: form.email,
+      phone: form.phone,
+    }
+
+    const shippingAddress: CartCustomerAddress = {
+      first_name: form.firstName,
+      last_name: form.lastName,
+      company: '',
+      address_1: form.address,
+      address_2: '',
+      city: form.city,
+      state: '',
+      postcode: form.postcode,
+      country: 'PL',
+    }
+
+    return {
+      billingAddress,
+      shippingAddress,
+    }
+  }
+
+  const hasShippingAddress =
+    Boolean(form.firstName.trim()) &&
+    Boolean(form.lastName.trim()) &&
+    Boolean(form.address.trim()) &&
+    Boolean(form.postcode.trim()) &&
+    Boolean(form.city.trim())
 
   useEffect(() => {
     window.scrollTo({
@@ -60,9 +131,7 @@ function Checkout() {
 
         const cart = await getCart(controller.signal)
 
-        setItemsCount(cart.items_count)
-        setExpectedTotal(cart.totals.total_price)
-        setTotal(Number(cart.totals.total_price))
+        updateSummary(cart)
       } catch (cartError) {
         if (
           cartError instanceof DOMException &&
@@ -96,6 +165,81 @@ function Checkout() {
       ...current,
       [field]: value,
     }))
+
+    if (
+      field === 'firstName' ||
+      field === 'lastName' ||
+      field === 'address' ||
+      field === 'postcode' ||
+      field === 'city'
+    ) {
+      setShippingName(null)
+    }
+  }
+
+  const handleCalculateShipping = async () => {
+    if (
+      !hasShippingAddress ||
+      isCalculatingShipping
+    ) {
+      return
+    }
+
+    setError(null)
+    setIsCalculatingShipping(true)
+
+    const {
+      billingAddress,
+      shippingAddress,
+    } = createAddresses()
+
+    try {
+      let cart = await updateCartCustomer(
+        billingAddress,
+        shippingAddress,
+      )
+
+      const shippingPackage = cart.shipping_rates[0]
+
+      if (
+        !shippingPackage ||
+        !shippingPackage.shipping_rates.length
+      ) {
+        throw new Error(
+          'Brak dostępnej metody dostawy dla podanego adresu.',
+        )
+      }
+
+      const selectedRate =
+        shippingPackage.shipping_rates.find(
+          (rate) => rate.selected,
+        )
+
+      if (!selectedRate) {
+        const firstRate =
+          shippingPackage.shipping_rates[0]
+
+        cart = await selectShippingRate(
+          shippingPackage.package_id,
+          firstRate.rate_id,
+        )
+      }
+
+      updateSummary(cart)
+    } catch (shippingError) {
+      console.error(shippingError)
+
+      setShippingName(null)
+      setShippingTotal(0)
+
+      setError(
+        shippingError instanceof Error
+          ? shippingError.message
+          : 'Nie udało się obliczyć dostawy.',
+      )
+    } finally {
+      setIsCalculatingShipping(false)
+    }
   }
 
   const handleSubmit = async (
@@ -103,38 +247,22 @@ function Checkout() {
   ) => {
     event.preventDefault()
 
-    if (isSubmitting) {
+    if (
+      isSubmitting ||
+      isCalculatingShipping ||
+      !shippingName ||
+      !expectedTotal
+    ) {
       return
     }
 
     setError(null)
     setIsSubmitting(true)
 
-    const billingAddress = {
-      first_name: form.firstName,
-      last_name: form.lastName,
-      company: '',
-      address_1: form.address,
-      address_2: '',
-      city: form.city,
-      state: '',
-      postcode: form.postcode,
-      country: 'PL',
-      email: form.email,
-      phone: form.phone,
-    }
-
-    const shippingAddress = {
-      first_name: form.firstName,
-      last_name: form.lastName,
-      company: '',
-      address_1: form.address,
-      address_2: '',
-      city: form.city,
-      state: '',
-      postcode: form.postcode,
-      country: 'PL',
-    }
+    const {
+      billingAddress,
+      shippingAddress,
+    } = createAddresses()
 
     try {
       const checkout = await processCheckout({
@@ -362,7 +490,14 @@ function Checkout() {
 
               <div>
                 <dt>Dostawa</dt>
-                <dd>Do ustalenia</dd>
+
+                <dd>
+                  {shippingName
+                    ? `${shippingName} — ${formatPrice(
+                        shippingTotal,
+                      )}`
+                    : 'Nieobliczona'}
+                </dd>
               </div>
 
               <div className="checkout__total">
@@ -370,6 +505,21 @@ function Checkout() {
                 <dd>{formatPrice(total)}</dd>
               </div>
             </dl>
+
+            {!shippingName && (
+              <button
+                type="button"
+                disabled={
+                  !hasShippingAddress ||
+                  isCalculatingShipping
+                }
+                onClick={handleCalculateShipping}
+              >
+                {isCalculatingShipping
+                  ? 'Obliczanie dostawy...'
+                  : 'Oblicz dostawę'}
+              </button>
+            )}
 
             <p className="checkout__payment">
               Płatność testowa: przy odbiorze
@@ -386,7 +536,11 @@ function Checkout() {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={
+                isSubmitting ||
+                isCalculatingShipping ||
+                !shippingName
+              }
             >
               {isSubmitting
                 ? 'Składanie zamówienia...'

@@ -48,9 +48,14 @@ const cartRequest = async (
   saveCartToken(response)
 
   if (!response.ok) {
-    throw new Error(
-      `WooCommerce Cart API error: ${response.status} ${response.statusText}`,
-    )
+    const data = await response.json().catch(() => null)
+
+    const message =
+      typeof data?.message === 'string'
+        ? data.message
+        : `WooCommerce Cart API error: ${response.status} ${response.statusText}`
+
+    throw new Error(message)
   }
 
   const cart = await response.json() as WooCommerceCart
@@ -102,4 +107,42 @@ export const removeCartItem = async (
     }),
   })
 
-  export const getCartToken = () => cartToken
+export interface CartCustomerAddress {
+  first_name: string
+  last_name: string
+  company: string
+  address_1: string
+  address_2: string
+  city: string
+  state: string
+  postcode: string
+  country: string
+  email?: string
+  phone?: string
+}
+
+export const updateCartCustomer = async (
+  billingAddress: CartCustomerAddress,
+  shippingAddress: CartCustomerAddress,
+) =>
+  cartRequest('/update-customer', {
+    method: 'POST',
+    body: JSON.stringify({
+      billing_address: billingAddress,
+      shipping_address: shippingAddress,
+    }),
+  })
+
+export const selectShippingRate = async (
+  packageId: number,
+  rateId: string,
+) =>
+  cartRequest('/select-shipping-rate', {
+    method: 'POST',
+    body: JSON.stringify({
+      package_id: packageId,
+      rate_id: rateId,
+    }),
+  })
+
+export const getCartToken = () => cartToken

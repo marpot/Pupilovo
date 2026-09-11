@@ -103,6 +103,27 @@ export interface WooCommerceCartTotals {
   currency_minor_unit: number
 }
 
+export interface WooCommerceShippingRate {
+  rate_id: string
+  name: string
+  description: string
+  delivery_time: string
+  price: string
+  taxes: string
+  instance_id: number
+  method_id: string
+  selected: boolean
+  currency_code: string
+  currency_symbol: string
+  currency_minor_unit: number
+}
+
+export interface WooCommerceShippingPackage {
+  package_id: number
+  name: string
+  shipping_rates: WooCommerceShippingRate[]
+}
+
 export interface WooCommerceCart {
   items: WooCommerceCartItem[]
   items_count: number
@@ -110,4 +131,7 @@ export interface WooCommerceCart {
   coupons: unknown[]
   fees: unknown[]
   totals: WooCommerceCartTotals
+  needs_shipping: boolean
+  has_calculated_shipping: boolean
+  shipping_rates: WooCommerceShippingPackage[]
 }
