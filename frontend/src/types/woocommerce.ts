@@ -44,6 +44,7 @@ export interface WooCommerceCategory {
 
 export interface Product {
   id: number
+  slug: string
   name: string
   price: string
   image: string
