@@ -85,7 +85,6 @@ function Shop() {
           pathnameRef.current === "/" || pathnameRef.current === "/about";
 
         const activationOffset = window.innerHeight * 0.3;
-
         const isShopActive = entry.boundingClientRect.top <= activationOffset;
 
         if (entry.isIntersecting && isShopActive && isSectionRoute) {
@@ -114,10 +113,11 @@ function Shop() {
   }, [navigate]);
 
   const selectedCategory = searchParams.get("category") || "all";
-
   const query = searchParams.get("q")?.trim() || "";
 
-  const searchWords = normalizeSearch(query).split(/\s+/).filter(Boolean);
+  const searchWords = normalizeSearch(query)
+    .split(/\s+/)
+    .filter(Boolean);
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams);
@@ -216,6 +216,7 @@ function Shop() {
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
+                    id={product.id}
                     name={product.name}
                     price={product.price}
                     image={product.image}
