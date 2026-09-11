@@ -101,3 +101,5 @@ export const removeCartItem = async (
       key,
     }),
   })
+
+  export const getCartToken = () => cartToken
