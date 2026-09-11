@@ -1,4 +1,4 @@
-@use '@/styles/variables' as *;
+@use "@/styles/variables" as *;
 
 .shop {
   display: flex;
@@ -153,7 +153,10 @@
   color: #686868;
   overflow-wrap: anywhere;
 
-  p { margin: 0; line-height: 1.6; }
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
 }
 
 .shop__empty {
@@ -163,8 +166,13 @@
   background: white;
   text-align: center;
 
-  h2 { margin-top: 0; }
-  p { color: #686868; line-height: 1.6; }
+  h2 {
+    margin-top: 0;
+  }
+  p {
+    color: #686868;
+    line-height: 1.6;
+  }
 }
 
 .shop__search-info button,
@@ -178,6 +186,11 @@
   font-weight: 650;
   cursor: pointer;
 
-  &:hover { background: #f4f5ef; }
-  &:focus-visible { outline: 3px solid $color-primary; outline-offset: 3px; }
+  &:hover {
+    background: #f4f5ef;
+  }
+  &:focus-visible {
+    outline: 3px solid $color-primary;
+    outline-offset: 3px;
+  }
 }

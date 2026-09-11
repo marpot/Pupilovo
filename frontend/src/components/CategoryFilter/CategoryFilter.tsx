@@ -1,34 +1,18 @@
-import '@/components/CategoryFilter/CategoryFilter.scss'
+import type { ProductCategory } from '@/types/woocommerce'
 
-const categories = [
-  {
-    name: 'Wszystkie kategorie',
-    value: 'all',
-  },
-  {
-    name: 'Psy',
-    value: 'psy',
-  },
-  {
-    name: 'Koty',
-    value: 'koty',
-  },
-  {
-    name: 'Gryzonie',
-    value: 'gryzonie',
-  },
-  {
-    name: 'Ptaki',
-    value: 'ptaki',
-  },
-]
+import '@/components/CategoryFilter/CategoryFilter.scss'
 
 type CategoryFilterProps = {
   value: string
+  categories: ProductCategory[]
   onChange: (value: string) => void
 }
 
-function CategoryFilter({ value, onChange }: CategoryFilterProps) {
+function CategoryFilter({
+  value,
+  categories,
+  onChange,
+}: CategoryFilterProps) {
   return (
     <label className="category-filter">
       <span className="category-filter__label">Kategoria</span>
@@ -37,6 +21,8 @@ function CategoryFilter({ value, onChange }: CategoryFilterProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >
+        <option value="all">Wszystkie kategorie</option>
+
         {categories.map((category) => (
           <option key={category.value} value={category.value}>
             {category.name}
