@@ -40,18 +40,25 @@ const products = [
   },
 ]
 
+const normalizeSearch = (value: string) =>
+  value.toLocaleLowerCase('pl').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/ł/g, 'l')
+
 function Shop() {
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
   const navigate = useNavigate()
   const shopRef = useRef<HTMLElement>(null)
   const pathnameRef = useRef(location.pathname)
+  const searchRef = useRef(location.search)
 
   useEffect(() => {
     pathnameRef.current = location.pathname
-  }, [location.pathname])
+    searchRef.current = location.search
+  }, [location.pathname, location.search])
 
   const selectedCategory = searchParams.get('category') || 'all'
+  const query = searchParams.get('q')?.trim() || ''
+  const searchWords = normalizeSearch(query).split(/\s+/).filter(Boolean)
 
   useEffect(() => {
     const shopElement = shopRef.current
@@ -69,7 +76,7 @@ function Shop() {
           entry.boundingClientRect.top <= activationOffset
 
         if (entry.isIntersecting && isShopActive && isSectionRoute) {
-          navigate('/shop', {
+          navigate({ pathname: '/shop', search: searchRef.current }, {
             replace: true,
             state: { shopVisible: true },
           })
@@ -88,18 +95,23 @@ function Shop() {
   }, [navigate])
 
   const handleCategoryChange = (category: string) => {
-    if (category === 'all') {
-      setSearchParams({})
-      return
-    }
-
-    setSearchParams({ category })
+    const params = new URLSearchParams(searchParams)
+    if (category === 'all') params.delete('category')
+    else params.set('category', category)
+    setSearchParams(params)
   }
 
-  const filteredProducts =
-    selectedCategory === 'all'
-      ? products
-      : products.filter((product) => product.category === selectedCategory)
+  const clearSearch = () => {
+    const params = new URLSearchParams(searchParams)
+    params.delete('q')
+    setSearchParams(params)
+  }
+
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory
+    const text = normalizeSearch(`${product.name} ${product.description}`)
+    return matchesCategory && searchWords.every((word) => text.includes(word))
+  })
 
   return (
     <section ref={shopRef} id="shop" className="shop">
@@ -117,6 +129,19 @@ function Shop() {
               <button type="button">Sortuj</button>
             </div>
           </div>
+
+          <div className="shop__search-info">
+            <p role="status">{query ? `Wyniki dla „${query}”: ${filteredProducts.length}` : `Liczba produktów: ${filteredProducts.length}`}</p>
+            {query && <button type="button" onClick={clearSearch}>Wyczyść wyszukiwanie</button>}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="shop__empty">
+              <h2>Nie znaleźliśmy produktów</h2>
+              <p>Spróbuj innej nazwy lub zmień kategorię.</p>
+              <button type="button" onClick={() => setSearchParams({})}>Pokaż wszystkie produkty</button>
+            </div>
+          )}
 
           <div className="shop__grid">
             {filteredProducts.map((product) => (

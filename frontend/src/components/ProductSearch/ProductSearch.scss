@@ -1,0 +1,31 @@
+@use '@/styles/variables' as *;
+
+.product-search {
+  width: min(600px, calc(100% - 32px));
+  max-height: calc(100svh - 32px);
+  padding: 32px;
+  border: 1px solid #e5e7dd;
+  border-radius: $radius-lg;
+  color: $color-text;
+  background: $color-background;
+  box-shadow: 0 24px 80px rgb(34 34 34 / 18%);
+
+  &::backdrop { background: rgb(34 34 34 / 40%); }
+  &__heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  h2 { margin: 0; font-size: 1.5rem; letter-spacing: -0.03em; }
+  p { margin: 12px 0 24px; color: #686868; line-height: 1.6; }
+  label { display: block; margin-bottom: 8px; font-size: 0.9rem; font-weight: 650; }
+  &__controls { display: flex; gap: 12px; }
+  input { flex: 1; min-width: 0; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid #c5c8bc; border-radius: $radius-md; font-size: 1rem; }
+  &__submit { min-height: 48px; padding: 12px 24px; border: 0; border-radius: 999px; color: white; background: $color-primary; font-weight: 750; cursor: pointer; }
+  &__submit:hover { background: #506b1a; }
+  &__close { flex-shrink: 0; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #f4f5ef; color: $color-text; font-size: 1.6rem; cursor: pointer; }
+  :focus-visible { outline: 3px solid $color-primary; outline-offset: 3px; }
+}
+
+@media (max-width: 600px) {
+  .product-search {
+    padding: 24px 20px;
+    &__controls { flex-direction: column; }
+  }
+}

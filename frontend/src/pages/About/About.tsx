@@ -11,10 +11,12 @@ function About() {
   const navigate = useNavigate()
   const aboutRef = useRef<HTMLElement>(null)
   const pathnameRef = useRef(location.pathname)
+  const searchRef = useRef(location.search)
 
   useEffect(() => {
     pathnameRef.current = location.pathname
-  }, [location.pathname])
+    searchRef.current = location.search
+  }, [location.pathname, location.search])
 
   useEffect(() => {
     const aboutElement = aboutRef.current
@@ -34,7 +36,7 @@ function About() {
           activationOffset
 
       if (isAboutActive && isSectionRoute) {
-        navigate('/about', {
+        navigate({ pathname: '/about', search: searchRef.current }, {
           replace: true,
           state: { aboutVisible: true },
         })

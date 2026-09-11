@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import '@/components/Header/Header.scss'
+import ProductSearch from '@/components/ProductSearch/ProductSearch'
 
 function Header() {
   const navigate = useNavigate()
@@ -59,10 +60,7 @@ function Header() {
         </nav>
 
         <div className="header__actions">
-          <button type="button" aria-label="Szukaj">
-            <span aria-hidden="true">🔍</span>
-            <span>Szukaj</span>
-          </button>
+          <ProductSearch />
 
           <Link to="/account" aria-label="Konto">
             <span aria-hidden="true">👤</span>
