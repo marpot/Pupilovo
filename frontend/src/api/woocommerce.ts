@@ -45,8 +45,11 @@ const stripHtml = (value: string) =>
     .replace(/\s+/g, ' ')
     .trim()
 
-const mapProduct = (product: WooCommerceProduct): Product => ({
+const mapProduct = (
+  product: WooCommerceProduct,
+): Product => ({
   id: product.id,
+  slug: product.slug,
   name: product.name,
   price: formatPrice(product),
   image: product.images[0]?.src || '/assets/hero.png',
@@ -66,6 +69,18 @@ export const getProducts = async (
   )
 
   return products.map(mapProduct)
+}
+
+export const getProductBySlug = async (
+  slug: string,
+  signal?: AbortSignal,
+): Promise<Product> => {
+  const product = await request<WooCommerceProduct>(
+    `/products/${encodeURIComponent(slug)}`,
+    signal,
+  )
+
+  return mapProduct(product)
 }
 
 export const getProductCategories = async (
