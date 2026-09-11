@@ -67,6 +67,9 @@ Pupilovo/
 
 ## Development
 
+Local WooCommerce setup, backups, and demo catalog instructions:
+[WooCommerce local setup](docs/woocommerce-local.md).
+
 The entire development environment runs with Docker Compose.
 
 Start the application:
