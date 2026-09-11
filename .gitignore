@@ -6,13 +6,22 @@ frontend/dist/
 # Environment
 .env
 .env.*
+!.env.example
 
 # Docker
 docker-compose.override.yml
 
 # WordPress
-wordpress/
+wordpress/*
+!wordpress/plugins/
+wordpress/plugins/*
+!wordpress/plugins/pupilovo-auth/
+!wordpress/plugins/pupilovo-auth/**
+
+# Local backups
 .local-backups/
+
+# Logs
 *.log
 
 # OS

@@ -1,0 +1,16 @@
+@use '@/styles/variables' as *;
+
+.order-history {
+  &__list { display: grid; gap: 20px; padding: 0; margin: 24px 0; list-style: none; }
+  &__order { border: 1px solid #e5e7dd; border-radius: $radius-md; padding: 20px; }
+  &__heading, &__summary, &__pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+  &__heading h3 { margin: 0; font-size: 1rem; }
+  &__status { padding: 5px 10px; border-radius: $radius-md; background: #f3f5ed; font-size: 0.85rem; }
+  &__summary { font-size: 0.9rem; }
+  summary { cursor: pointer; line-height: 1.6; }
+  details ul { padding-left: 20px; margin-bottom: 0; }
+  details li { padding: 4px 0; line-height: 1.5; }
+  button { padding: 10px 16px; border: 1px solid #e5e7dd; border-radius: $radius-md; background: white; cursor: pointer; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button:focus-visible, summary:focus-visible { outline: 3px solid $color-primary; outline-offset: 3px; }
+}
