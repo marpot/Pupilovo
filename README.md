@@ -2,28 +2,61 @@
 
 **Headless pet e-commerce storefront built with React, TypeScript, WordPress and WooCommerce.**
 
-Pupilovo is a real-world e-commerce project designed around a decoupled architecture: WooCommerce manages products and commerce data, while a custom React application provides the customer-facing storefront.
+Pupilovo is a portfolio e-commerce project built around a decoupled architecture. WooCommerce manages products, customers, carts and orders, while a custom React application provides the customer-facing storefront.
 
-The project is actively developed using a feature-branch and pull-request workflow and is intended both as a working online store and as a production-style portfolio project.
+The project is developed using feature branches, Pull Requests and automated quality checks. The current goal is a complete demonstrational e-commerce flow rather than a production store processing real payments.
 
 ## ✨ Implemented Features
+
+### Storefront
 
 - WooCommerce-backed product catalog using live store data
 - Product categories and category filtering
 - Product search
 - Dedicated product detail pages using product slugs
 - Product availability and pricing from WooCommerce
-- Real WooCommerce shopping cart integration
-- Add-to-cart from product pages
+- Responsive React storefront
+- About and shop pages
+
+### Cart & Checkout
+
+- Real WooCommerce Store API cart integration
+- Browser-session Cart Token
+- Add-to-cart from catalog and product pages
 - Cart quantity updates and product removal
 - Live cart item counter in the application header
 - Cart totals synchronized with WooCommerce
-- Optimistic cart quantity updates with rollback on API errors
-- Responsive React storefront
-- Customer account UI foundation
-- About and shop pages
-- Docker-based local WordPress and WooCommerce environment
-- Demo WooCommerce catalog and local development setup
+- Optimistic quantity updates with rollback on API errors
+- Dedicated React checkout flow
+- Billing and shipping form
+- Polish shipping address support
+- Courier shipping method with WooCommerce-backed totals
+- Guest checkout
+- Test Cash on Delivery payment flow
+- WooCommerce order creation
+- Order confirmation page
+
+### Customer Accounts
+
+- WooCommerce customer registration
+- Email and password login
+- Google Sign-In
+- Server-side Google token verification
+- Safe linking of Google identities with existing customer accounts
+- WordPress/WooCommerce authenticated session
+- Session restoration
+- Logout with REST nonce protection
+- Customer order history
+- Paginated order history restricted to the authenticated customer
+
+### Development & Quality
+
+- Docker-based local WordPress, WooCommerce and MySQL environment
+- Demo WooCommerce catalog
+- PHP integration tests for authentication, Google token verification and order history
+- ESLint and TypeScript/Vite production build checks
+- GitHub Actions quality workflow
+- Feature-branch and Pull Request development workflow
 
 ## 🧱 Architecture
 
@@ -33,7 +66,7 @@ Customer
    ▼
 React + TypeScript storefront
    │
-   │ WooCommerce Store API / REST integration
+   │ WooCommerce Store API / custom REST API
    ▼
 WordPress + WooCommerce
    │
@@ -41,16 +74,18 @@ WordPress + WooCommerce
 MySQL
 ```
 
-The React frontend is separated from the WordPress presentation layer. WordPress and WooCommerce act as the CMS and commerce backend, while the storefront controls the customer experience.
+The React frontend is separated from the WordPress presentation layer. WordPress and WooCommerce act as the CMS and commerce backend, while React controls the storefront experience.
 
-The shopping cart uses WooCommerce's Store API and a browser-session Cart Token, allowing the React application to work with real WooCommerce cart state instead of maintaining a disconnected mock cart.
+The cart uses WooCommerce's Store API and a browser-session Cart Token. Customer authentication uses the native WordPress/WooCommerce session through a custom REST API, keeping cart state and authenticated account state as separate concerns.
 
 ## 🛠 Tech Stack
 
-**Frontend:** React · TypeScript · Vite · SCSS  
-**E-commerce / CMS:** WordPress · WooCommerce  
-**Data:** MySQL · WooCommerce Store API / REST APIs  
-**Infrastructure:** Docker · Docker Compose  
+**Frontend:** React · TypeScript · Vite · SCSS
+**E-commerce / CMS:** WordPress · WooCommerce
+**Data:** MySQL · WooCommerce Store API · Custom WordPress REST API
+**Authentication:** WordPress/WooCommerce sessions · Google Sign-In
+**Infrastructure:** Docker · Docker Compose
+**Quality:** ESLint · TypeScript · PHP integration tests · GitHub Actions
 **Workflow:** Git · GitHub · Feature branches · Pull Requests
 
 ## 📁 Project Structure
@@ -68,19 +103,23 @@ Pupilovo/
 │       ├── pages/
 │       ├── styles/
 │       └── types/
+├── wordpress/
+│   └── plugins/
+│       └── pupilovo-auth/
 ├── docs/
+├── .github/
+│   └── workflows/
 ├── Dockerfile
 ├── docker-compose.yml
-├── .dockerignore
-├── .gitignore
+├── .env.example
 └── README.md
 ```
 
 ## 🚀 Local Development
 
-The project includes a Docker-based local environment for the storefront, WordPress and WooCommerce.
+The project includes a Docker Compose environment for the React storefront, WordPress, WooCommerce and MySQL.
 
-WooCommerce setup, backups and demo catalog instructions are available in [`docs/woocommerce-local.md`](docs/woocommerce-local.md).
+WooCommerce setup, backups and demo catalog instructions are available in `docs/woocommerce-local.md`.
 
 Start the environment:
 
@@ -106,35 +145,73 @@ Stop the environment:
 docker compose down
 ```
 
+Google Sign-In requires the local Google client ID configuration described by the project's environment example and authentication documentation.
+
+## ✅ Quality Checks
+
+Frontend lint:
+
+```bash
+docker compose exec frontend sh -lc 'cd frontend && npm run lint'
+```
+
+Production build:
+
+```bash
+docker compose exec frontend sh -lc 'cd frontend && npm run build'
+```
+
+Authentication integration tests:
+
+```bash
+docker compose exec wordpress php /var/www/html/wp-content/plugins/pupilovo-auth/tests/auth-integration.php
+```
+
+Google token tests:
+
+```bash
+docker compose exec wordpress php /var/www/html/wp-content/plugins/pupilovo-auth/tests/google-token.php
+```
+
+Customer order-history integration tests:
+
+```bash
+docker compose exec wordpress php /var/www/html/wp-content/plugins/pupilovo-auth/tests/orders-integration.php
+```
+
+GitHub Actions also runs repeatable frontend and PHP quality checks without requiring repository secrets.
+
 ## 🔄 Development Workflow
 
-Development is organized around short-lived feature branches. Features are implemented independently and merged into `main` through Pull Requests after verification.
+Development is organized around GitHub Issues, a Kanban project and short-lived branches.
 
-Recent milestones include:
+```text
+Issue
+  ↓
+feature / fix / chore branch
+  ↓
+Pull Request
+  ↓
+automated quality checks
+  ↓
+main
+```
 
-1. Local WordPress and WooCommerce environment with demo catalog
-2. WooCommerce-backed product catalog
-3. Search and category filtering
-4. WooCommerce cart integration
-5. Product details page with quantity selection and add-to-cart
-
-This workflow keeps individual changes reviewable and provides a clear history of the project's development.
-
-## 🎯 Engineering Goals
-
-Pupilovo focuses on practical e-commerce engineering rather than a static storefront demo. Key goals are clean separation of concerns, reusable React components, maintainable TypeScript and SCSS, robust WooCommerce integration, responsive UX and incremental delivery through tested feature branches.
+Major completed milestones include the local WooCommerce environment, live product catalog, search and filtering, product details, Store API cart, checkout and shipping flow, customer authentication, Google Sign-In and customer order history.
 
 ## 🚧 Status
 
-**Active development.**
+**Active development — functional demo flow available locally.**
 
-The core storefront-to-WooCommerce integration is working: products are loaded from WooCommerce, customers can search and filter the catalog, open product detail pages and interact with a real WooCommerce-backed cart.
+The main commerce foundation is implemented. Products come from WooCommerce, the cart uses real Store API state, checkout creates WooCommerce orders, and customers can register, sign in and view their own order history.
 
-Planned work includes completing the customer account/authentication flow, checkout and further storefront polish.
+Remaining work focuses on completing account management, customer addresses and password recovery; strengthening checkout and order-confirmation validation; sandbox payment integration; transactional email testing; catalog and UX polish; security review; E2E testing; and final demo deployment.
+
+Real payment processing is intentionally not enabled at this stage.
 
 ## 📸 Screenshots
 
-Screenshots and a visual project walkthrough will be added after the current storefront implementation is complete.
+Screenshots and a visual project walkthrough will be added during final demo preparation.
 
 ## License
 
