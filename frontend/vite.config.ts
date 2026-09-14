@@ -15,7 +15,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/wp-json': {
-        target: 'http://wordpress',
+        target:
+          process.env.VITE_WP_PROXY_TARGET ??
+          'http://localhost:8080',
         changeOrigin: true,
       },
     },
