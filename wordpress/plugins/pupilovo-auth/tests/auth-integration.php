@@ -33,7 +33,7 @@ function request($endpoint, $body = null, $nonceHeader = null) {
     $c = curl_init('http://' . $GLOBALS['address'] . '/pupilovo/v1/auth/' . $endpoint);
     $headers = ['Content-Type: application/json'];
     if ($nonceHeader !== null) $headers[] = 'X-WP-Nonce: ' . $nonceHeader;
-    curl_setopt_array($c, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 60,
+    curl_setopt_array($c, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => max(60, (int) getenv('PUPILOVO_TEST_HTTP_TIMEOUT')),
         CURLOPT_COOKIEFILE => $GLOBALS['jar'], CURLOPT_COOKIEJAR => $GLOBALS['jar'],
         CURLOPT_COOKIE => 'pupilovo_google_nonce=' . $GLOBALS['nonce'], CURLOPT_HTTPHEADER => $headers]);
     if ($body !== null) { curl_setopt($c, CURLOPT_POSTFIELDS, json_encode($body)); }

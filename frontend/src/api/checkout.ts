@@ -1,3 +1,4 @@
+import { expireCustomerSession, getCurrentUser } from '@/api/auth'
 import { getCartToken } from '@/api/cart'
 
 const CHECKOUT_API_URL =
@@ -51,6 +52,12 @@ export const processCheckout = async (
     headers.set('Cart-Token', cartToken)
   }
 
+  const session = await getCurrentUser()
+
+  if (session.authenticated && session.nonce) {
+    headers.set('X-WP-Nonce', session.nonce)
+  }
+
   const response = await fetch(
     CHECKOUT_API_URL,
     {
@@ -61,6 +68,10 @@ export const processCheckout = async (
   )
 
   const data = await response.json()
+
+  if (response.status === 401 || response.status === 403) {
+    throw expireCustomerSession()
+  }
 
   if (!response.ok) {
     const message =
