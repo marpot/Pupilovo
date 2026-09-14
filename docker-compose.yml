@@ -1,45 +1,60 @@
 services:
-
   frontend:
+    profiles:
+      - full
+
     build:
       context: .
       dockerfile: Dockerfile
+
     container_name: pupilovo-frontend
+
     ports:
       - "5173:5173"
+
     volumes:
       - .:/workspace/Pupilovo
       - /workspace/Pupilovo/frontend/node_modules
       - /var/run/docker.sock:/var/run/docker.sock
+
     environment:
       CHOKIDAR_USEPOLLING: "true"
       VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+      VITE_WP_PROXY_TARGET: http://wordpress
 
   wordpress:
     image: wordpress:7.1-php8.3-apache
+
     container_name: pupilovo-wordpress
+
     ports:
       - "8080:80"
+
     environment:
       PUPILOVO_GOOGLE_CLIENT_ID: ${PUPILOVO_GOOGLE_CLIENT_ID:-}
       WORDPRESS_DB_HOST: mysql:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress_password
       WORDPRESS_DB_NAME: wordpress
+
     volumes:
       - wordpress_data:/var/www/html
       - ./wordpress/plugins/pupilovo-auth:/var/www/html/wp-content/plugins/pupilovo-auth
+
     depends_on:
       - mysql
 
   mysql:
     image: mysql:8.0
+
     container_name: pupilovo-mysql
+
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress_password
       MYSQL_ROOT_PASSWORD: root_password
+
     volumes:
       - mysql_data:/var/lib/mysql
 
