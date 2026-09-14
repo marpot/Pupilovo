@@ -36,7 +36,7 @@ function pupilovo_get_customer_orders(WP_REST_Request $request)
         'type' => 'shop_order',
         'customer_id' => get_current_user_id(),
         // Exclude unfinished checkout drafts and refunds as standalone orders.
-        'status' => array_keys(wc_get_order_statuses()),
+        'status' => array_values(array_diff(array_keys(wc_get_order_statuses()), ['wc-checkout-draft'])),
         'limit' => 10,
         'page' => $page,
         'paginate' => true,
