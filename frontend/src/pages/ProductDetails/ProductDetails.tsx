@@ -7,9 +7,7 @@ import type { Product } from '@/types/woocommerce'
 
 import '@/pages/ProductDetails/ProductDetails.scss'
 
-function ProductDetails() {
-  const { slug } = useParams<{ slug: string }>()
-
+function ProductDetailsContent({ slug }: { slug: string | undefined }) {
   const [product, setProduct] = useState<Product | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
@@ -19,8 +17,6 @@ function ProductDetails() {
 
   useEffect(() => {
     if (!slug) {
-      setError('Nie znaleziono produktu.')
-      setIsLoading(false)
       return
     }
 
@@ -28,15 +24,12 @@ function ProductDetails() {
 
     const loadProduct = async () => {
       try {
-        setIsLoading(true)
-        setError(null)
-
         const productData = await getProductBySlug(
           slug,
           controller.signal,
         )
 
-        setProduct(productData)
+        if (!controller.signal.aborted) setProduct(productData)
       } catch (productError) {
         if (
           productError instanceof DOMException &&
@@ -88,7 +81,7 @@ function ProductDetails() {
     }
   }
 
-  if (isLoading) {
+  if (slug && isLoading) {
     return (
       <main className="product-details">
         <div className="product-details__container">
@@ -98,7 +91,7 @@ function ProductDetails() {
     )
   }
 
-  if (error || !product) {
+  if (!slug || error || !product) {
     return (
       <main className="product-details">
         <div className="product-details__container">
@@ -212,4 +205,7 @@ function ProductDetails() {
   )
 }
 
-export default ProductDetails
+export default function ProductDetails() {
+  const { slug } = useParams<{ slug: string }>()
+  return <ProductDetailsContent key={slug} slug={slug} />
+}

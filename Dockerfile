@@ -9,7 +9,7 @@ RUN apk add --no-cache docker-cli docker-cli-compose \
 COPY frontend/package*.json ./frontend/
 
 RUN cd frontend \
-    && npm install \
+    && npm ci \
     && chown -R node:node /workspace/Pupilovo/frontend/node_modules
 
 COPY frontend/ ./frontend/
