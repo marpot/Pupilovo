@@ -15,7 +15,11 @@ function Account() {
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(() =>
+    new URLSearchParams(window.location.search).get('session') === 'expired'
+      ? 'Sesja wygasła lub zmieniła się. Zaloguj się ponownie.'
+      : '',
+  )
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -71,6 +75,8 @@ function Account() {
           </p>
         </header>
 
+        {message && <p className="account__status" role="status">{message}</p>}
+
         {isLoading ? (
           <p className="account__status">
             Ładowanie konta...
@@ -82,11 +88,6 @@ function Account() {
               onLogout={() => void handleLogout()}
             />
 
-            {message && (
-              <p className="account__status" role="status">
-                {message}
-              </p>
-            )}
           </>
         ) : (
           <div className="account__layout">

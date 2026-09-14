@@ -57,7 +57,8 @@ function pupilovo_get_user_payload(WP_User $user): array
 
 function pupilovo_auth_response(
     WP_User $user,
-    bool $include_nonce = true
+    bool $include_nonce = true,
+    ?string $cart_token = null
 ): WP_REST_Response {
     return new WP_REST_Response([
         'authenticated' => true,
@@ -65,7 +66,107 @@ function pupilovo_auth_response(
         'nonce' => $include_nonce
             ? wp_create_nonce('wp_rest')
             : null,
+        'cartToken' => $cart_token,
     ]);
+}
+
+function pupilovo_migrate_cart_session(
+    WP_REST_Request $request,
+    int $user_id
+): ?string {
+    $cart_token_class =
+        '\Automattic\WooCommerce\StoreApi\Utilities\CartTokenUtils';
+
+    if (!class_exists($cart_token_class)) {
+        return null;
+    }
+
+    $incoming_token = trim(
+        (string) $request->get_header('Cart-Token')
+    );
+
+    if (
+        $incoming_token !== ''
+        && $cart_token_class::validate_cart_token($incoming_token)
+    ) {
+        $payload = $cart_token_class::get_cart_token_payload(
+            $incoming_token
+        );
+
+        $source_session_id = (string) ($payload['user_id'] ?? '');
+
+        if (
+            $source_session_id !== ''
+            && str_starts_with($source_session_id, 't_')
+        ) {
+            global $wpdb;
+
+            $table = $wpdb->prefix . 'woocommerce_sessions';
+
+            $session = $wpdb->get_row(
+                $wpdb->prepare(
+                    'SELECT session_value
+                     FROM %i
+                     WHERE session_key = %s',
+                    $table,
+                    $source_session_id
+                ),
+                ARRAY_A
+            );
+
+            if ($session && isset($session['session_value'])) {
+                $expiration =
+                    $cart_token_class::get_cart_token_expiration();
+
+                $saved = $wpdb->query(
+                    $wpdb->prepare(
+                        'INSERT INTO %i
+                            (`session_key`, `session_value`, `session_expiry`)
+                         VALUES (%s, %s, %d)
+                         ON DUPLICATE KEY UPDATE
+                            `session_value` = VALUES(`session_value`),
+                            `session_expiry` = VALUES(`session_expiry`)',
+                        $table,
+                        (string) $user_id,
+                        $session['session_value'],
+                        $expiration
+                    )
+                );
+
+                if ($saved !== false) {
+                    $wpdb->delete(
+                        $table,
+                        ['session_key' => $source_session_id],
+                        ['%s']
+                    );
+
+                    do_action(
+                        'woocommerce_guest_session_to_user_id',
+                        $source_session_id,
+                        (string) $user_id
+                    );
+                }
+            }
+        }
+    }
+
+    return $cart_token_class::get_cart_token(
+        (string) $user_id
+    );
+}
+
+function pupilovo_finish_auth(
+    WP_User $user,
+    WP_REST_Request $request
+): WP_REST_Response {
+    return pupilovo_auth_response(
+        $user,
+        false,
+        pupilovo_migrate_cart_session(
+            $request,
+            $user->ID
+        )
+    );
 }
 
 /**
@@ -195,7 +296,7 @@ function pupilovo_register_customer(WP_REST_Request $request)
      * Cookie zostanie zapisane przez przeglądarkę dopiero po zakończeniu
      * tego requestu. Dlatego nonce pobieramy później przez /auth/me.
      */
-    return pupilovo_auth_response($user, false);
+    return pupilovo_finish_auth($user, $request);
 }
 
 function pupilovo_login_customer(WP_REST_Request $request)
@@ -246,9 +347,9 @@ function pupilovo_login_customer(WP_REST_Request $request)
     /*
      * Nonce bootstrapujemy dopiero przez kolejne /auth/me.
      */
-    return pupilovo_auth_response(
+    return pupilovo_finish_auth(
         $authenticated_user,
-        false
+        $request
     );
 }
 
@@ -433,5 +534,5 @@ function pupilovo_login_google(WP_REST_Request $request)
     wp_set_current_user($user->ID);
     wc_set_customer_auth_cookie($user->ID);
     do_action('wp_login', $user->user_login, $user);
-    return pupilovo_auth_response($user, false);
+    return pupilovo_finish_auth($user, $request);
 }

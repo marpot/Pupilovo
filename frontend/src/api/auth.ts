@@ -1,3 +1,9 @@
+import {
+  clearCartToken,
+  getCartToken,
+  setCartToken,
+} from '@/api/cart'
+
 export type AuthUser = {
   id: number
   firstName: string
@@ -8,6 +14,7 @@ type AuthResponse = {
   authenticated: boolean
   user: AuthUser | null
   nonce: string | null
+  cartToken?: string | null
 }
 
 type LoginPayload = {
@@ -30,7 +37,21 @@ export class AuthError extends Error {
   }
 }
 
+const CUSTOMER_SESSION_KEY = 'pupilovo-customer-id'
 let restNonce: string | null = null
+
+function clearCustomerSession() {
+  restNonce = null
+  sessionStorage.removeItem(CUSTOMER_SESSION_KEY)
+  clearCartToken()
+}
+
+export function expireCustomerSession(): AuthError {
+  clearCustomerSession()
+  // A full navigation also discards account, address and cart component state.
+  window.location.assign('/account?session=expired')
+  return new AuthError('Sesja wygasła lub zmieniła się. Zaloguj się ponownie.', 'session_expired')
+}
 
 async function parseResponse(response: Response): Promise<AuthResponse> {
   const data = await response.json()
@@ -42,29 +63,54 @@ async function parseResponse(response: Response): Promise<AuthResponse> {
     )
   }
 
-  if (data.nonce) {
-    restNonce = data.nonce
+  restNonce = data.nonce ?? null
+
+  if (data.authenticated && data.user) {
+    sessionStorage.setItem(CUSTOMER_SESSION_KEY, String(data.user.id))
+  }
+
+  if (typeof data.cartToken === 'string') {
+    setCartToken(data.cartToken)
   }
 
   return data
 }
 
 export async function getCurrentUser(): Promise<AuthResponse> {
+  const previousCustomer = sessionStorage.getItem(CUSTOMER_SESSION_KEY)
   const response = await fetch('/wp-json/pupilovo/v1/auth/me', {
     credentials: 'include',
+    cache: 'no-store',
   })
 
-  return parseResponse(response)
+  if (response.status === 401 || response.status === 403) {
+    throw expireCustomerSession()
+  }
+  const session = await parseResponse(response)
+  if (previousCustomer && (!session.authenticated || String(session.user?.id) !== previousCustomer)) {
+    throw expireCustomerSession()
+  }
+  return session
 }
 
 async function authenticate(
   endpoint: 'login' | 'register' | 'google',
   payload: LoginPayload | RegisterPayload | { credential: string; password?: string },
 ): Promise<AuthResponse> {
+  const headers = new Headers({
+    'Content-Type': 'application/json',
+  })
+
+  const currentCartToken = getCartToken()
+
+  if (currentCartToken) {
+    headers.set('Cart-Token', currentCartToken)
+  }
+
   const response = await fetch(`/wp-json/pupilovo/v1/auth/${endpoint}`, {
     method: 'POST',
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(payload),
   })
   const session = await parseResponse(response)
@@ -84,12 +130,10 @@ export function loginWithGoogle(credential: string, password?: string): Promise<
 }
 
 export async function logoutCustomer(): Promise<void> {
-  if (!restNonce) {
-    const session = await getCurrentUser()
-
-    if (!session.authenticated || !session.nonce) {
-      return
-    }
+  const session = await getCurrentUser()
+  if (!session.authenticated || !session.nonce) {
+    clearCustomerSession()
+    return
   }
 
   const response = await fetch('/wp-json/pupilovo/v1/auth/logout', {
@@ -100,9 +144,10 @@ export async function logoutCustomer(): Promise<void> {
     },
   })
 
+  if (response.status === 401 || response.status === 403) throw expireCustomerSession()
   await parseResponse(response)
 
-  restNonce = null
+  clearCustomerSession()
 }
 
 /** Reuse the cookie/nonce bootstrap for authenticated account API reads. */
@@ -121,7 +166,7 @@ export async function getAccountData<T>(path: string, signal?: AbortSignal): Pro
   })
   const data = await response.json()
   if (!response.ok) {
-    if (response.status === 401 || response.status === 403) restNonce = null
+    if (response.status === 401 || response.status === 403) throw expireCustomerSession()
     throw new AuthError(
       response.status === 401 || response.status === 403
         ? 'Sesja wygasła. Odśwież stronę i zaloguj się ponownie.'
