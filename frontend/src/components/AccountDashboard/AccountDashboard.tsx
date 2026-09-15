@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import CustomerAddresses from '@/components/CustomerAddresses/CustomerAddresses'
+import AccountProfile from '@/components/AccountProfile/AccountProfile'
 import OrderHistory from '@/components/OrderHistory/OrderHistory'
 
 import '@/components/AccountDashboard/AccountDashboard.scss'
@@ -32,11 +33,7 @@ function AccountDashboard({ user, onLogout }: AccountDashboardProps) {
         {section === 'details' && (
           <>
             <p>Twoje podstawowe dane w Pupilovo.</p>
-            <dl>
-              <dt>Imię</dt><dd>{user?.firstName || '—'}</dd>
-              <dt>E-mail</dt><dd>{user?.email || '—'}</dd>
-            </dl>
-            <p className="account-dashboard__note">Edycja danych będzie dostępna wkrótce.</p>
+            <AccountProfile fallback={{ firstName: user?.firstName || '', email: user?.email || '' }} />
           </>
         )}
         {section === 'orders' && <OrderHistory />}

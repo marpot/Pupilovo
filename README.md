@@ -48,6 +48,8 @@ The project is developed using feature branches, Pull Requests and automated qua
 - Logout with REST nonce protection
 - Customer order history
 - Paginated order history restricted to the authenticated customer
+- Billing and shipping addresses stored in WooCommerce
+- Editable customer profile data
 
 ### Development & Quality
 
@@ -95,17 +97,14 @@ Pupilovo/
 ├── frontend/
 │   └── src/
 │       ├── api/
-│       ├── assets/
 │       ├── components/
-│       ├── context/
-│       ├── hooks/
-│       ├── layouts/
 │       ├── pages/
 │       ├── styles/
 │       └── types/
 ├── wordpress/
 │   └── plugins/
-│       └── pupilovo-auth/
+│       ├── pupilovo-auth/
+│       └── pupilovo-dropshipping/
 ├── docs/
 ├── .github/
 │   └── workflows/
@@ -121,10 +120,10 @@ The project includes a Docker Compose environment for the React storefront, Word
 
 WooCommerce setup, backups and demo catalog instructions are available in `docs/woocommerce-local.md`.
 
-Start the environment:
+Start the environment with `make dev` (or `make docker-full` for the full Docker profile):
 
 ```bash
-docker compose up -d
+make dev
 ```
 
 Frontend:
@@ -146,6 +145,8 @@ docker compose down
 ```
 
 Google Sign-In requires the local Google client ID configuration described by the project's environment example and authentication documentation.
+
+WordPress core is not stored in this repository. It comes from the official Docker image; this repository contains only custom code and project configuration.
 
 ## ✅ Quality Checks
 
@@ -179,6 +180,12 @@ Customer order-history integration tests:
 docker compose exec wordpress php /var/www/html/wp-content/plugins/pupilovo-auth/tests/orders-integration.php
 ```
 
+Customer addresses:
+
+```bash
+docker compose exec wordpress php /var/www/html/wp-content/plugins/pupilovo-auth/tests/addresses-integration.php
+```
+
 GitHub Actions also runs repeatable frontend and PHP quality checks without requiring repository secrets.
 
 ## 🔄 Development Workflow
@@ -201,13 +208,17 @@ Major completed milestones include the local WooCommerce environment, live produ
 
 ## 🚧 Status
 
-**Active development — functional demo flow available locally.**
+**Portfolio MVP — functional demo flow available locally.**
 
 The main commerce foundation is implemented. Products come from WooCommerce, the cart uses real Store API state, checkout creates WooCommerce orders, and customers can register, sign in and view their own order history.
 
-Remaining work focuses on completing account management, customer addresses and password recovery; strengthening checkout and order-confirmation validation; sandbox payment integration; transactional email testing; catalog and UX polish; security review; E2E testing; and final demo deployment.
+The project includes account profile editing, customer addresses, checkout prefill, contact/help/legal pages and a documented future dropshipping adapter contract.
 
 Real payment processing is intentionally not enabled at this stage.
+
+## Before production launch
+
+Intentionally deferred: supplier selection and REST/XML/CSV integration, a real catalog, production payments and shipping, SMTP, domain/hosting/SSL, backups and security hardening, legal review and replacement of demo terms/privacy text, and production E2E tests.
 
 ## 📸 Screenshots
 

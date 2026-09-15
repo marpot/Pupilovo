@@ -28,6 +28,7 @@ function Shop() {
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sort, setSort] = useState<'default' | 'price-asc' | 'price-desc' | 'name'>('default');
 
   useEffect(() => {
     pathnameRef.current = location.pathname;
@@ -152,7 +153,7 @@ function Shop() {
     const matchesSearch = searchWords.every((word) => text.includes(word));
 
     return matchesCategory && matchesSearch;
-  });
+  }).sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name, 'pl') : sort === 'price-asc' || sort === 'price-desc' ? (Number(a.price.replace(/[^0-9,]/g, '').replace(',', '.')) - Number(b.price.replace(/[^0-9,]/g, '').replace(',', '.'))) * (sort === 'price-desc' ? -1 : 1) : 0);
 
   return (
     <section ref={shopRef} id="shop" className="shop">
@@ -168,7 +169,7 @@ function Shop() {
                 onChange={handleCategoryChange}
               />
 
-              <button type="button">Sortuj</button>
+              <label className="shop__sort">Sortuj<select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}><option value="default">Domyślnie</option><option value="price-asc">Cena: rosnąco</option><option value="price-desc">Cena: malejąco</option><option value="name">Nazwa</option></select></label>
             </div>
           </div>
 

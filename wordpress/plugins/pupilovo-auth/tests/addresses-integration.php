@@ -74,6 +74,14 @@ try {
     request('auth/login', ['email' => "$run-owner@example.com", 'password' => $password]);
     [, $me] = request('auth/me');
     $nonce = $me['nonce'];
+    [$status, $profile] = request('account/profile', null, $nonce);
+    check($status === 200 && $profile['firstName'] === 'owner', 'profile read returns current customer');
+    [$status, $profile] = request('account/profile', ['firstName' => '<b>Anna</b>', 'lastName' => 'Test', 'displayName' => 'Anna T.'], $nonce);
+    check($status === 200 && $profile['firstName'] === 'Anna' && $profile['lastName'] === 'Test' && $profile['displayName'] === 'Anna T.', 'profile update sanitizes and persists');
+    [$status] = request('account/profile', ['customer_id' => $customers['other'], 'firstName' => 'Attack'], $nonce);
+    check($status === 400, 'profile rejects customer_id');
+    [$status] = request('account/profile', ['firstName' => ''], $nonce);
+    check($status === 400, 'profile validates required first name');
     foreach (['account/addresses', 'account/addresses/billing', 'account/addresses/shipping'] as $route) {
         $body = $route === 'account/addresses' ? null : ['city' => 'Kraków'];
         [$status] = request($route, $body);
