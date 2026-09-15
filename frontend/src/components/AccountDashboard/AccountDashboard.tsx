@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import CustomerAddresses from '@/components/CustomerAddresses/CustomerAddresses'
 import OrderHistory from '@/components/OrderHistory/OrderHistory'
 
 import '@/components/AccountDashboard/AccountDashboard.scss'
@@ -39,7 +40,7 @@ function AccountDashboard({ user, onLogout }: AccountDashboardProps) {
           </>
         )}
         {section === 'orders' && <OrderHistory />}
-        {section === 'addresses' && <p>Tu zarządzisz adresami dostawy i rozliczeń. Ta sekcja będzie dostępna wkrótce.</p>}
+        {section === 'addresses' && <CustomerAddresses />}
       </section>
     </div>
   )

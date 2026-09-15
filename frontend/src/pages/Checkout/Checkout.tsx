@@ -9,41 +9,23 @@ import {
   getCart,
   selectShippingRate,
   updateCartCustomer,
-  type CartCustomerAddress,
 } from '@/api/cart'
+import { getCurrentUser } from '@/api/auth'
+import { emptyAddress, getCustomerAddresses, type CustomerAddress } from '@/api/addresses'
+import AddressFields from '@/components/CustomerAddresses/AddressFields'
 import { processCheckout } from '@/api/checkout'
 import { formatPrice } from '@/pages/Cart/cartData'
 import type { WooCommerceCart } from '@/types/woocommerce'
 
 import '@/pages/Checkout/Checkout.scss'
 
-type CheckoutForm = {
-  firstName: string
-  lastName: string
-  email: string
-  phone: string
-  address: string
-  postcode: string
-  city: string
-  note: string
-}
-
-const initialForm: CheckoutForm = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  address: '',
-  postcode: '',
-  city: '',
-  note: '',
-}
-
 function Checkout() {
   const navigate = useNavigate()
 
-  const [form, setForm] =
-    useState<CheckoutForm>(initialForm)
+  const [billing, setBilling] = useState<CustomerAddress>(() => ({ ...emptyAddress(), email: '' }))
+  const [shipping, setShipping] = useState<CustomerAddress>(emptyAddress)
+  const [differentShipping, setDifferentShipping] = useState(false)
+  const [note, setNote] = useState('')
 
   const [total, setTotal] = useState(0)
   const [shippingTotal, setShippingTotal] = useState(0)
@@ -78,44 +60,15 @@ function Checkout() {
   }
 
   const createAddresses = () => {
-    const billingAddress: CartCustomerAddress = {
-      first_name: form.firstName,
-      last_name: form.lastName,
-      company: '',
-      address_1: form.address,
-      address_2: '',
-      city: form.city,
-      state: '',
-      postcode: form.postcode,
-      country: 'PL',
-      email: form.email,
-      phone: form.phone,
-    }
-
-    const shippingAddress: CartCustomerAddress = {
-      first_name: form.firstName,
-      last_name: form.lastName,
-      company: '',
-      address_1: form.address,
-      address_2: '',
-      city: form.city,
-      state: '',
-      postcode: form.postcode,
-      country: 'PL',
-    }
-
-    return {
-      billingAddress,
-      shippingAddress,
-    }
+    const shippingAddress = { ...(differentShipping ? shipping : billing) }
+    // Shipping has no native email field in WooCommerce.
+    delete shippingAddress.email
+    return { billingAddress: billing, shippingAddress }
   }
 
-  const hasShippingAddress =
-    Boolean(form.firstName.trim()) &&
-    Boolean(form.lastName.trim()) &&
-    Boolean(form.address.trim()) &&
-    Boolean(form.postcode.trim()) &&
-    Boolean(form.city.trim())
+  const delivery = differentShipping ? shipping : billing
+  const hasShippingAddress = ['first_name', 'last_name', 'address_1', 'city', 'country']
+    .every((field) => Boolean(delivery[field as keyof CustomerAddress]?.trim()))
 
   useEffect(() => {
     window.scrollTo({
@@ -131,7 +84,23 @@ function Checkout() {
 
         const cart = await getCart(controller.signal)
 
+        if (controller.signal.aborted) return
         updateSummary(cart)
+        // Recalculate rates for the addresses actually shown, including guest checkout.
+        setShippingName(null)
+        const session = await getCurrentUser()
+        if (session.authenticated) {
+          try {
+            const addresses = await getCustomerAddresses(controller.signal)
+            if (controller.signal.aborted) return
+            setBilling({ ...addresses.billing, country: addresses.billing.country || 'PL', email: addresses.billing.email || session.user?.email || '' })
+            setShipping({ ...addresses.shipping, country: addresses.shipping.country || 'PL' })
+            setDifferentShipping(Boolean(addresses.shipping.address_1))
+          } catch (addressError) {
+            if (controller.signal.aborted) return
+            setError(addressError instanceof Error ? addressError.message : 'Nie udało się pobrać adresów. Uzupełnij je ręcznie.')
+          }
+        }
       } catch (cartError) {
         if (
           cartError instanceof DOMException &&
@@ -156,26 +125,6 @@ function Checkout() {
 
     return () => controller.abort()
   }, [])
-
-  const handleChange = (
-    field: keyof CheckoutForm,
-    value: string,
-  ) => {
-    setForm((current) => ({
-      ...current,
-      [field]: value,
-    }))
-
-    if (
-      field === 'firstName' ||
-      field === 'lastName' ||
-      field === 'address' ||
-      field === 'postcode' ||
-      field === 'city'
-    ) {
-      setShippingName(null)
-    }
-  }
 
   const handleCalculateShipping = async () => {
     if (
@@ -268,7 +217,7 @@ function Checkout() {
       const checkout = await processCheckout({
         billing_address: billingAddress,
         shipping_address: shippingAddress,
-        customer_note: form.note,
+        customer_note: note,
         payment_method: 'cod',
         payment_data: [],
         expected_total: expectedTotal,
@@ -346,135 +295,19 @@ function Checkout() {
           onSubmit={handleSubmit}
         >
           <section className="checkout__form">
+            <AddressFields type="billing" value={billing} disabled={isCalculatingShipping || isSubmitting}
+              onChange={(value) => { setBilling(value); setShippingName(null) }} />
+            <label className="checkout__different-address">
+              <input type="checkbox" checked={differentShipping} disabled={isCalculatingShipping || isSubmitting}
+                onChange={(event) => { setDifferentShipping(event.target.checked); setShippingName(null) }} />
+              Dostawa na inny adres
+            </label>
+            {differentShipping && <AddressFields type="shipping" value={shipping} disabled={isCalculatingShipping || isSubmitting}
+              onChange={(value) => { setShipping(value); setShippingName(null) }} />}
             <div className="checkout__fields">
-              <label>
-                Imię
-
-                <input
-                  required
-                  autoComplete="given-name"
-                  value={form.firstName}
-                  onChange={(event) =>
-                    handleChange(
-                      'firstName',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label>
-                Nazwisko
-
-                <input
-                  required
-                  autoComplete="family-name"
-                  value={form.lastName}
-                  onChange={(event) =>
-                    handleChange(
-                      'lastName',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label>
-                E-mail
-
-                <input
-                  required
-                  type="email"
-                  autoComplete="email"
-                  value={form.email}
-                  onChange={(event) =>
-                    handleChange(
-                      'email',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label>
-                Telefon
-
-                <input
-                  required
-                  type="tel"
-                  autoComplete="tel"
-                  value={form.phone}
-                  onChange={(event) =>
-                    handleChange(
-                      'phone',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
               <label className="checkout__field--wide">
-                Adres
-
-                <input
-                  required
-                  autoComplete="street-address"
-                  value={form.address}
-                  onChange={(event) =>
-                    handleChange(
-                      'address',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label>
-                Kod pocztowy
-
-                <input
-                  required
-                  autoComplete="postal-code"
-                  placeholder="00-000"
-                  value={form.postcode}
-                  onChange={(event) =>
-                    handleChange(
-                      'postcode',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label>
-                Miasto
-
-                <input
-                  required
-                  autoComplete="address-level2"
-                  value={form.city}
-                  onChange={(event) =>
-                    handleChange(
-                      'city',
-                      event.target.value,
-                    )
-                  }
-                />
-              </label>
-
-              <label className="checkout__field--wide">
-                Uwagi do zamówienia
-
-                <textarea
-                  rows={4}
-                  value={form.note}
-                  onChange={(event) =>
-                    handleChange(
-                      'note',
-                      event.target.value,
-                    )
-                  }
-                />
+                Uwagi do zamówienia (opcjonalnie)
+                <textarea value={note} onChange={(event) => setNote(event.target.value)} rows={4} />
               </label>
             </div>
           </section>
