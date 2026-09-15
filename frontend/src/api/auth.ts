@@ -150,8 +150,12 @@ export async function logoutCustomer(): Promise<void> {
   clearCustomerSession()
 }
 
-/** Reuse the cookie/nonce bootstrap for authenticated account API reads. */
+/** Reuse the cookie/nonce bootstrap for authenticated account requests. */
 export async function getAccountData<T>(path: string, signal?: AbortSignal): Promise<T> {
+  return accountRequest<T>(path, { signal })
+}
+
+export async function accountRequest<T>(path: string, options: RequestInit = {}): Promise<T> {
   if (!restNonce) {
     const session = await getCurrentUser()
     if (!session.authenticated || !session.nonce) {
@@ -159,9 +163,9 @@ export async function getAccountData<T>(path: string, signal?: AbortSignal): Pro
     }
   }
   const response = await fetch(path, {
+    ...options,
     credentials: 'include',
-    headers: { 'X-WP-Nonce': restNonce ?? '' },
-    signal,
+    headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': restNonce ?? '' },
     cache: 'no-store',
   })
   const data = await response.json()

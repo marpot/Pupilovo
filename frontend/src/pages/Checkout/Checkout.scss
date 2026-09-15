@@ -54,6 +54,13 @@
     background: white;
   }
 
+  &__different-address {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
   &__fields {
     display: grid;
     grid-template-columns: 1fr 1fr;

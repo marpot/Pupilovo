@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 require_once __DIR__ . '/customer-orders.php';
+require_once __DIR__ . '/customer-addresses.php';
 
 add_action('rest_api_init', function () {
     register_rest_route('pupilovo/v1', '/auth/register', [
