@@ -7,6 +7,8 @@ import {
 export type AuthUser = {
   id: number
   firstName: string
+  lastName?: string
+  displayName?: string
   email: string
 }
 

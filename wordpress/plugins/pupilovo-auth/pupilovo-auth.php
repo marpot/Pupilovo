@@ -45,6 +45,14 @@ add_action('rest_api_init', function () {
             return is_user_logged_in();
         },
     ]);
+    register_rest_route('pupilovo/v1', '/account/profile', [
+        'methods' => 'GET', 'callback' => 'pupilovo_get_profile',
+        'permission_callback' => 'is_user_logged_in',
+    ]);
+    register_rest_route('pupilovo/v1', '/account/profile', [
+        'methods' => 'POST', 'callback' => 'pupilovo_save_profile',
+        'permission_callback' => 'is_user_logged_in',
+    ]);
 });
 
 function pupilovo_get_user_payload(WP_User $user): array
@@ -378,6 +386,44 @@ function pupilovo_logout_customer()
         'user' => null,
         'nonce' => null,
     ]);
+}
+
+function pupilovo_profile_payload(WP_User $user): array {
+    return [
+        'firstName' => (string) get_user_meta($user->ID, 'first_name', true),
+        'lastName' => (string) get_user_meta($user->ID, 'last_name', true),
+        'displayName' => (string) $user->display_name,
+        'email' => (string) $user->user_email,
+    ];
+}
+
+function pupilovo_get_profile() {
+    $user = pupilovo_restore_user_from_cookie();
+    if (!$user) return new WP_Error('not_authenticated', 'Sesja wygasła.', ['status' => 401]);
+    return new WP_REST_Response(pupilovo_profile_payload($user));
+}
+
+function pupilovo_save_profile(WP_REST_Request $request) {
+    $user = pupilovo_restore_user_from_cookie();
+    if (!$user) return new WP_Error('not_authenticated', 'Sesja wygasła.', ['status' => 401]);
+    $input = $request->get_json_params();
+    $allowed = ['firstName', 'lastName', 'displayName'];
+    if (!is_array($input) || !$input || array_diff(array_keys($input), $allowed)) {
+        return new WP_Error('invalid_profile', 'Prześlij prawidłowe dane konta.', ['status' => 400]);
+    }
+    foreach ($allowed as $field) {
+        if (array_key_exists($field, $input) && (!is_string($input[$field]) || strlen($input[$field]) > 100)) {
+            return new WP_Error('invalid_profile', 'Nieprawidłowa wartość danych konta.', ['status' => 400]);
+        }
+    }
+    $first = sanitize_text_field((string) ($input['firstName'] ?? get_user_meta($user->ID, 'first_name', true)));
+    $last = sanitize_text_field((string) ($input['lastName'] ?? get_user_meta($user->ID, 'last_name', true)));
+    $display = sanitize_text_field((string) ($input['displayName'] ?? $user->display_name));
+    if ($first === '' || $display === '') return new WP_Error('invalid_profile', 'Imię i nazwa wyświetlana są wymagane.', ['status' => 400]);
+    update_user_meta($user->ID, 'first_name', $first);
+    update_user_meta($user->ID, 'last_name', $last);
+    wp_update_user(['ID' => $user->ID, 'display_name' => $display]);
+    return new WP_REST_Response(pupilovo_profile_payload(get_user_by('id', $user->ID)));
 }
 
 /** Only RS256 and keys fetched from Google's fixed HTTPS endpoint are accepted. */

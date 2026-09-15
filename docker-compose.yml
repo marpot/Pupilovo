@@ -40,6 +40,7 @@ services:
     volumes:
       - wordpress_data:/var/www/html
       - ./wordpress/plugins/pupilovo-auth:/var/www/html/wp-content/plugins/pupilovo-auth
+      - ./wordpress/plugins/pupilovo-dropshipping:/var/www/html/wp-content/plugins/pupilovo-dropshipping
 
     depends_on:
       - mysql

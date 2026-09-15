@@ -1,0 +1,2 @@
+@use '@/styles/variables' as *;
+.footer { border-top: 1px solid #e5e7dd; background: #fff; padding: 28px 0; color: #686868; font-size: .85rem; }.footer__container { width: min(100% - 40px, $container-width); margin: auto; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }.footer nav { display: flex; flex-wrap: wrap; gap: 14px; }.footer a { color: #506b1a; }

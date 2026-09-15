@@ -17,6 +17,8 @@ wordpress/*
 wordpress/plugins/*
 !wordpress/plugins/pupilovo-auth/
 !wordpress/plugins/pupilovo-auth/**
+!wordpress/plugins/pupilovo-dropshipping/
+!wordpress/plugins/pupilovo-dropshipping/**
 
 # Local backups
 .local-backups/

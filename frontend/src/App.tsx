@@ -15,6 +15,8 @@ import Checkout from '@/pages/Checkout/Checkout'
 import ProductDetails from '@/pages/ProductDetails/ProductDetails'
 import Shop from '@/pages/Shop/Shop'
 import OrderConfirmation from '@/pages/OrderConfirmation/OrderConfirmation'
+import InfoPage from '@/pages/Info/Info'
+import Footer from '@/components/Footer/Footer'
 
 function Home() {
   const location = useLocation()
@@ -71,7 +73,11 @@ function App() {
             path="/order-confirmation/:id"
             element={<OrderConfirmation />}
           />
+          {['contact', 'delivery', 'returns', 'faq', 'terms', 'privacy'].map((path) => (
+            <Route key={path} path={`/${path}`} element={<InfoPage />} />
+          ))}
         </Routes>
+        <Footer />
       </div>
     </BrowserRouter>
   )
