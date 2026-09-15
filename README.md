@@ -222,7 +222,12 @@ Intentionally deferred: supplier selection and REST/XML/CSV integration, a real 
 
 ## 📸 Screenshots
 
-Screenshots and a visual project walkthrough will be added during final demo preparation.
+Selected views from the Pupilovo storefront. The screenshots show the current visual direction, navigation and core landing-page sections.
+
+| Strona główna | O nas | Komfort, bliskość i prostota |
+| --- | --- | --- |
+| [![Strona główna — hero sklepu](<docs/screenshots/Strona główna.png>)](<docs/screenshots/Strona główna.png>) | [![O nas — sekcja marki](<docs/screenshots/O nas.png>)](<docs/screenshots/O nas.png>) | [![Wartości Pupilovo — Komfort, Bliskość i Prostota](<docs/screenshots/Komfort bliskość.png>)](<docs/screenshots/Komfort bliskość.png>) |
+| Hero strony głównej z hasłem Pupilovo, zdjęciem psa, główną nawigacją i przyciskiem przejścia do sklepu. | Sekcja „O nas” z hasłem „Dla zwierząt. Z miłości.” oraz zdjęciem psa i opiekuna. | Sekcja wartości marki z trzema filarami: Komfort, Bliskość i Prostota, zakończona wezwaniem do poznania produktów. |
 
 ## License
 
