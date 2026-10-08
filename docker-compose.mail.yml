@@ -1,0 +1,16 @@
+## Optional test-mail overlay. Never enable on public production deployments.
+## Usage: docker compose -f docker-compose.yml -f docker-compose.mail.yml up -d
+services:
+  wordpress:
+    environment:
+      PUPILOVO_LOCAL_SMTP_HOST: mailpit
+      PUPILOVO_LOCAL_SMTP_PORT: '1025'
+    volumes:
+      - ./wordpress/mu-plugins/pupilovo-local-mail.php:/var/www/html/wp-content/mu-plugins/pupilovo-local-mail.php:ro
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${PUPILOVO_MAILPIT_PORT:-8025}:8025'
+    networks:
+      - default

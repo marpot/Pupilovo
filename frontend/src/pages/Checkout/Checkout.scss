@@ -180,6 +180,17 @@
     font-weight: 750;
   }
 
+  &__payment-options {
+    margin: 24px 0 0;
+    padding: 16px;
+    border: 1px solid #e5e7dd;
+    border-radius: 12px;
+
+    legend { font-weight: 750; }
+    label { display: flex; align-items: center; gap: 10px; margin: 12px 0; font-size: 0.9rem; }
+    label:has(input:disabled) { opacity: 0.55; }
+  }
+
   &__payment {
     color: #686868;
 

@@ -26,6 +26,9 @@ function Checkout() {
   const [shipping, setShipping] = useState<CustomerAddress>(emptyAddress)
   const [differentShipping, setDifferentShipping] = useState(false)
   const [note, setNote] = useState('')
+  // PayU stays unavailable until a verified sandbox gateway is configured in WooCommerce.
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'payu'>('cod')
+  const payuSandboxReady = false
 
   const [total, setTotal] = useState(0)
   const [shippingTotal, setShippingTotal] = useState(0)
@@ -218,10 +221,23 @@ function Checkout() {
         billing_address: billingAddress,
         shipping_address: shippingAddress,
         customer_note: note,
-        payment_method: 'cod',
+        payment_method: paymentMethod,
         payment_data: [],
         expected_total: expectedTotal,
       })
+
+      if (paymentMethod === 'payu') {
+        const redirectUrl = checkout.payment_result?.redirect_url
+        if (!redirectUrl) {
+          throw new Error('PayU nie zwróciło adresu przekierowania do płatności.')
+        }
+        const target = new URL(redirectUrl, window.location.origin)
+        if (target.protocol !== 'https:' && target.hostname !== 'localhost') {
+          throw new Error('Nieprawidłowy adres przekierowania płatności.')
+        }
+        window.location.assign(target.href)
+        return
+      }
 
       navigate(
         `/order-confirmation/${checkout.order_id}`,
@@ -354,9 +370,18 @@ function Checkout() {
               </button>
             )}
 
-            <p className="checkout__payment">
-              Płatność testowa: przy odbiorze
-            </p>
+            <fieldset className="checkout__payment-options">
+              <legend>Metoda płatności</legend>
+              <label>
+                <input type="radio" name="payment" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} />
+                Płatność testowa przy odbiorze
+              </label>
+              <label>
+                <input type="radio" name="payment" value="payu" checked={paymentMethod === 'payu'} disabled={!payuSandboxReady} onChange={() => setPaymentMethod('payu')} />
+                PayU — BLIK, karta, przelew (oczekuje na sandbox)
+              </label>
+              <p className="checkout__payment">PayU jest wyłączone. Żadne prawdziwe płatności nie są przyjmowane.</p>
+            </fieldset>
 
             {error && (
               <p

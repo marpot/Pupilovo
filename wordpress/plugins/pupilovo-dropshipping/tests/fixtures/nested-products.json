@@ -1,0 +1,22 @@
+{
+  "meta": {"complete": true, "currency": "PLN"},
+  "data": {
+    "products": [
+      {
+        "id": "j-1",
+        "identity": {"sku": "JSON-1", "ean": "5901234123457"},
+        "title": "Karma testowa",
+        "pricing": {"net": 41.25},
+        "categories": ["Psy", "Karma"],
+        "images": [{"url": "https://cdn.example.test/a.jpg"}]
+      },
+      {
+        "id": "j-2",
+        "identity": {"sku": "JSON-2"},
+        "title": "Żwirek testowy",
+        "pricing": {"net": 19.99},
+        "categories": ["Koty", "Higiena"]
+      }
+    ]
+  }
+}

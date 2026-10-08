@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <product>
+    <id>DEMO-001</id>
+    <sku>PUP-DEMO-001</sku>
+    <ean>5900000000001</ean>
+    <name>Miska stalowa – model 1</name>
+    <price>12.50</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-002</id>
+    <sku>PUP-DEMO-002</sku>
+    <ean>5900000000002</ean>
+    <name>Miska spowalniająca – model 2</name>
+    <price>16.25</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-003</id>
+    <sku>PUP-DEMO-003</sku>
+    <ean>5900000000003</ean>
+    <name>Fontanna dla kota – model 3</name>
+    <price>20.00</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-004</id>
+    <sku>PUP-DEMO-004</sku>
+    <ean>5900000000004</ean>
+    <name>Piłka gumowa – model 4</name>
+    <price>23.75</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-005</id>
+    <sku>PUP-DEMO-005</sku>
+    <ean>5900000000005</ean>
+    <name>Sznur bawełniany – model 5</name>
+    <price>27.50</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-006</id>
+    <sku>PUP-DEMO-006</sku>
+    <ean>5900000000006</ean>
+    <name>Myszka pluszowa – model 6</name>
+    <price>31.25</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-007</id>
+    <sku>PUP-DEMO-007</sku>
+    <ean>5900000000007</ean>
+    <name>Legowisko okrągłe – model 7</name>
+    <price>35.00</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-008</id>
+    <sku>PUP-DEMO-008</sku>
+    <ean>5900000000008</ean>
+    <name>Mata chłodząca – model 8</name>
+    <price>38.75</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-009</id>
+    <sku>PUP-DEMO-009</sku>
+    <ean>5900000000009</ean>
+    <name>Kocyk polarowy – model 9</name>
+    <price>42.50</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-010</id>
+    <sku>PUP-DEMO-010</sku>
+    <ean>5900000000010</ean>
+    <name>Smycz miejska – model 10</name>
+    <price>46.25</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-011</id>
+    <sku>PUP-DEMO-011</sku>
+    <ean>5900000000011</ean>
+    <name>Obroża regulowana – model 11</name>
+    <price>50.00</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-012</id>
+    <sku>PUP-DEMO-012</sku>
+    <ean>5900000000012</ean>
+    <name>Szelki spacerowe – model 12</name>
+    <price>53.75</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-013</id>
+    <sku>PUP-DEMO-013</sku>
+    <ean>5900000000013</ean>
+    <name>Szczotka dwustronna – model 13</name>
+    <price>57.50</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Pielęgnacja</category>
+  </product>
+  <product>
+    <id>DEMO-014</id>
+    <sku>PUP-DEMO-014</sku>
+    <ean>5900000000014</ean>
+    <name>Grzebień metalowy – model 14</name>
+    <price>61.25</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Pielęgnacja</category>
+  </product>
+  <product>
+    <id>DEMO-015</id>
+    <sku>PUP-DEMO-015</sku>
+    <ean>5900000000015</ean>
+    <name>Rękawica pielęgnacyjna – model 15</name>
+    <price>65.00</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Pielęgnacja</category>
+  </product>
+  <product>
+    <id>DEMO-016</id>
+    <sku>PUP-DEMO-016</sku>
+    <ean>5900000000016</ean>
+    <name>Transporter materiałowy – model 16</name>
+    <price>68.75</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Transportery</category>
+  </product>
+  <product>
+    <id>DEMO-017</id>
+    <sku>PUP-DEMO-017</sku>
+    <ean>5900000000017</ean>
+    <name>Transporter plastikowy – model 17</name>
+    <price>72.50</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Transportery</category>
+  </product>
+  <product>
+    <id>DEMO-018</id>
+    <sku>PUP-DEMO-018</sku>
+    <ean>5900000000018</ean>
+    <name>Torba podróżna – model 18</name>
+    <price>76.25</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Transportery</category>
+  </product>
+  <product>
+    <id>DEMO-019</id>
+    <sku>PUP-DEMO-019</sku>
+    <ean>5900000000019</ean>
+    <name>Miska silikonowa – model 19</name>
+    <price>80.00</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-020</id>
+    <sku>PUP-DEMO-020</sku>
+    <ean>5900000000020</ean>
+    <name>Poidło turystyczne – model 20</name>
+    <price>83.75</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-021</id>
+    <sku>PUP-DEMO-021</sku>
+    <ean>5900000000021</ean>
+    <name>Zabawka logiczna – model 21</name>
+    <price>87.50</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-022</id>
+    <sku>PUP-DEMO-022</sku>
+    <ean>5900000000022</ean>
+    <name>Drapak kartonowy – model 22</name>
+    <price>91.25</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-023</id>
+    <sku>PUP-DEMO-023</sku>
+    <ean>5900000000023</ean>
+    <name>Poduszka dla psa – model 23</name>
+    <price>95.00</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-024</id>
+    <sku>PUP-DEMO-024</sku>
+    <ean>5900000000024</ean>
+    <name>Legowisko ortopedyczne – model 24</name>
+    <price>98.75</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-025</id>
+    <sku>PUP-DEMO-025</sku>
+    <ean>5900000000025</ean>
+    <name>Smycz przepinana – model 25</name>
+    <price>102.50</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-026</id>
+    <sku>PUP-DEMO-026</sku>
+    <ean>5900000000026</ean>
+    <name>Adresówka – model 26</name>
+    <price>106.25</price>
+    <tax>23</tax>
+    <stock>0</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-027</id>
+    <sku>PUP-DEMO-027</sku>
+    <ean>5900000000027</ean>
+    <name>Szampon dla psów – model 27</name>
+    <price>110.00</price>
+    <tax>23</tax>
+    <stock>7</stock>
+    <category>Legowiska</category>
+  </product>
+  <product>
+    <id>DEMO-028</id>
+    <sku>PUP-DEMO-028</sku>
+    <ean>5900000000028</ean>
+    <name>Obcinacz pazurów – model 28</name>
+    <price>113.75</price>
+    <tax>23</tax>
+    <stock>14</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-029</id>
+    <sku>PUP-DEMO-029</sku>
+    <ean>5900000000029</ean>
+    <name>Plecak transporter – model 29</name>
+    <price>117.50</price>
+    <tax>23</tax>
+    <stock>21</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-030</id>
+    <sku>PUP-DEMO-030</sku>
+    <ean>5900000000030</ean>
+    <name>Pas samochodowy – model 30</name>
+    <price>121.25</price>
+    <tax>23</tax>
+    <stock>28</stock>
+    <category>Smycze i obroże</category>
+  </product>
+  <product>
+    <id>DEMO-031</id>
+    <sku>PUP-DEMO-001</sku>
+    <ean></ean>
+    <name>Konflikt SKU z pierwszym produktem</name>
+    <price>19.90</price>
+    <tax>23</tax>
+    <stock>2</stock>
+    <category>Miski i poidła</category>
+  </product>
+  <product>
+    <id>DEMO-032</id>
+    <sku>PUP-DEMO-032</sku>
+    <ean></ean>
+    <name>Brak ceny zakupu</name>
+    <price></price>
+    <tax>23</tax>
+    <stock>5</stock>
+    <category>Zabawki</category>
+  </product>
+  <product>
+    <id>DEMO-033</id>
+    <sku>PUP-DEMO-033</sku>
+    <ean></ean>
+    <name>Nowa nieznana kategoria</name>
+    <price>44.00</price>
+    <tax>23</tax>
+    <stock>3</stock>
+    <category>Elektronika dla zwierząt</category>
+  </product>
+</catalog>

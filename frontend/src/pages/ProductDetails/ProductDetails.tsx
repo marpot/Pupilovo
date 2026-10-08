@@ -10,6 +10,7 @@ import '@/pages/ProductDetails/ProductDetails.scss'
 function ProductDetailsContent({ slug }: { slug: string | undefined }) {
   const [product, setProduct] = useState<Product | null>(null)
   const [quantity, setQuantity] = useState(1)
+  const [activeImage, setActiveImage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isAdding, setIsAdding] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -29,7 +30,10 @@ function ProductDetailsContent({ slug }: { slug: string | undefined }) {
           controller.signal,
         )
 
-        if (!controller.signal.aborted) setProduct(productData)
+        if (!controller.signal.aborted) {
+          setProduct(productData)
+          setActiveImage(0)
+        }
       } catch (productError) {
         if (
           productError instanceof DOMException &&
@@ -118,11 +122,26 @@ function ProductDetailsContent({ slug }: { slug: string | undefined }) {
         </Link>
 
         <div className="product-details__layout">
-          <div className="product-details__image">
-            <img
-              src={product.image}
-              alt={product.name}
-            />
+          <div className="product-details__gallery">
+            <div className="product-details__image">
+              <img
+                src={product.images[activeImage]?.src || product.image}
+                alt={product.images[activeImage]?.alt || product.name}
+              />
+            </div>
+            {product.images.length > 1 && (
+              <div className="product-details__thumbnails" aria-label="Galeria produktu">
+                {product.images.map((image, index) => (
+                  <button key={`${image.src}-${index}`} type="button"
+                    className={activeImage === index ? 'is-active' : ''}
+                    onClick={() => setActiveImage(index)}
+                    aria-label={`Pokaż zdjęcie ${index + 1}`}
+                    aria-pressed={activeImage === index}>
+                    <img src={image.src} alt="" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="product-details__content">

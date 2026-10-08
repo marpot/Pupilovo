@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog generated="2026-10-08">
+  <products>
+    <product id="p-1">
+      <identity><sku>SKU-1</sku><ean>5901234123457</ean></identity>
+      <name>Legowisko</name>
+      <price currency="PLN">129,90</price>
+      <categories><category>Psy</category><category>Legowiska</category></categories>
+      <images><image>https://cdn.example.test/1.jpg</image><image>https://cdn.example.test/2.jpg</image></images>
+    </product>
+    <product id="p-2">
+      <identity><sku>SKU-2</sku></identity>
+      <name>Drapak</name>
+      <price currency="EUR">39.50</price>
+      <categories><category>Koty</category></categories>
+    </product>
+  </products>
+</catalog>

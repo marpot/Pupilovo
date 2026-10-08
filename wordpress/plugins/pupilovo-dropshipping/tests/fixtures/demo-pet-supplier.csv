@@ -1,0 +1,34 @@
+id,sku,ean,name,price,tax,stock,category
+DEMO-001,PUP-DEMO-001,5900000000001,Miska stalowa – model 1,12.50,23,0,Miski i poidła
+DEMO-002,PUP-DEMO-002,5900000000002,Miska spowalniająca – model 2,16.25,23,7,Miski i poidła
+DEMO-003,PUP-DEMO-003,5900000000003,Fontanna dla kota – model 3,20.00,23,14,Miski i poidła
+DEMO-004,PUP-DEMO-004,5900000000004,Piłka gumowa – model 4,23.75,23,21,Zabawki
+DEMO-005,PUP-DEMO-005,5900000000005,Sznur bawełniany – model 5,27.50,23,28,Zabawki
+DEMO-006,PUP-DEMO-006,5900000000006,Myszka pluszowa – model 6,31.25,23,0,Zabawki
+DEMO-007,PUP-DEMO-007,5900000000007,Legowisko okrągłe – model 7,35.00,23,7,Legowiska
+DEMO-008,PUP-DEMO-008,5900000000008,Mata chłodząca – model 8,38.75,23,14,Legowiska
+DEMO-009,PUP-DEMO-009,5900000000009,Kocyk polarowy – model 9,42.50,23,21,Legowiska
+DEMO-010,PUP-DEMO-010,5900000000010,Smycz miejska – model 10,46.25,23,28,Smycze i obroże
+DEMO-011,PUP-DEMO-011,5900000000011,Obroża regulowana – model 11,50.00,23,0,Smycze i obroże
+DEMO-012,PUP-DEMO-012,5900000000012,Szelki spacerowe – model 12,53.75,23,7,Smycze i obroże
+DEMO-013,PUP-DEMO-013,5900000000013,Szczotka dwustronna – model 13,57.50,23,14,Pielęgnacja
+DEMO-014,PUP-DEMO-014,5900000000014,Grzebień metalowy – model 14,61.25,23,21,Pielęgnacja
+DEMO-015,PUP-DEMO-015,5900000000015,Rękawica pielęgnacyjna – model 15,65.00,23,28,Pielęgnacja
+DEMO-016,PUP-DEMO-016,5900000000016,Transporter materiałowy – model 16,68.75,23,0,Transportery
+DEMO-017,PUP-DEMO-017,5900000000017,Transporter plastikowy – model 17,72.50,23,7,Transportery
+DEMO-018,PUP-DEMO-018,5900000000018,Torba podróżna – model 18,76.25,23,14,Transportery
+DEMO-019,PUP-DEMO-019,5900000000019,Miska silikonowa – model 19,80.00,23,21,Miski i poidła
+DEMO-020,PUP-DEMO-020,5900000000020,Poidło turystyczne – model 20,83.75,23,28,Miski i poidła
+DEMO-021,PUP-DEMO-021,5900000000021,Zabawka logiczna – model 21,87.50,23,0,Miski i poidła
+DEMO-022,PUP-DEMO-022,5900000000022,Drapak kartonowy – model 22,91.25,23,7,Zabawki
+DEMO-023,PUP-DEMO-023,5900000000023,Poduszka dla psa – model 23,95.00,23,14,Zabawki
+DEMO-024,PUP-DEMO-024,5900000000024,Legowisko ortopedyczne – model 24,98.75,23,21,Zabawki
+DEMO-025,PUP-DEMO-025,5900000000025,Smycz przepinana – model 25,102.50,23,28,Legowiska
+DEMO-026,PUP-DEMO-026,5900000000026,Adresówka – model 26,106.25,23,0,Legowiska
+DEMO-027,PUP-DEMO-027,5900000000027,Szampon dla psów – model 27,110.00,23,7,Legowiska
+DEMO-028,PUP-DEMO-028,5900000000028,Obcinacz pazurów – model 28,113.75,23,14,Smycze i obroże
+DEMO-029,PUP-DEMO-029,5900000000029,Plecak transporter – model 29,117.50,23,21,Smycze i obroże
+DEMO-030,PUP-DEMO-030,5900000000030,Pas samochodowy – model 30,121.25,23,28,Smycze i obroże
+DEMO-031,PUP-DEMO-001,,Konflikt SKU z pierwszym produktem,19.90,23,2,Miski i poidła
+DEMO-032,PUP-DEMO-032,,Brak ceny zakupu,,23,5,Zabawki
+DEMO-033,PUP-DEMO-033,,Nowa nieznana kategoria,44.00,23,3,Elektronika dla zwierząt

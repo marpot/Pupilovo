@@ -7,18 +7,26 @@ frontend/dist/
 .env
 .env.*
 !.env.example
+!.env.production.example
 
 # Docker
 docker-compose.override.yml
 
 # WordPress
 wordpress/*
+!wordpress/mu-plugins/
+wordpress/mu-plugins/*
+!wordpress/mu-plugins/pupilovo-local-mail.php
 !wordpress/plugins/
 wordpress/plugins/*
 !wordpress/plugins/pupilovo-auth/
 !wordpress/plugins/pupilovo-auth/**
 !wordpress/plugins/pupilovo-dropshipping/
 !wordpress/plugins/pupilovo-dropshipping/**
+wordpress/plugins/pupilovo-dropshipping/admin-app/node_modules/
+wordpress/plugins/pupilovo-dropshipping/admin-app/*.tsbuildinfo
+wordpress/plugins/pupilovo-dropshipping/admin-app/vite.config.js
+wordpress/plugins/pupilovo-dropshipping/admin-app/vite.config.d.ts
 
 # Local backups
 .local-backups/
