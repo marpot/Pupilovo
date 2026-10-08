@@ -21,7 +21,7 @@ final class ImportPreviewService {
         global $wpdb;
         $catalog=Schema::table('catalog_products');$selections=Schema::table('product_selections');
         $where=$supplier_id? $wpdb->prepare(' AND p.supplier_id=%d',$supplier_id):'';
-        if(!empty($options['linkedOnly'])){$where.=' AND EXISTS (SELECT 1 FROM '.Schema::table('product_links').' l WHERE l.catalog_product_id=p.id AND l.supplier_id=p.supplier_id AND l.relationship_status=\'linked\')';}
+        if(!empty($options['linkedOnly'])){$where.=' AND EXISTS (SELECT 1 FROM '.Schema::table('product_links').' l WHERE l.catalog_product_id=p.id AND l.supplier_id=p.supplier_id AND l.relationship_status=\'linked\')';$where.=' AND EXISTS (SELECT 1 FROM '.Schema::table('supplier_offers').' o WHERE o.catalog_product_id=p.id AND o.supplier_id=p.supplier_id AND o.offer_status=\'active\')';}
         $rows=$wpdb->get_results("SELECT p.* FROM {$catalog} p JOIN {$selections} sel ON sel.catalog_product_id=p.id WHERE p.record_status='valid' {$where} ORDER BY p.id",ARRAY_A)?:[];
         if($rows===[])throw new \RuntimeException('Nie wybrano żadnych produktów do importu.');
         $supplier_ids=array_values(array_unique(array_map(static fn(array $row):int=>(int)$row['supplier_id'],$rows)));
