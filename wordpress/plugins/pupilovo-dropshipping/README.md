@@ -1,6 +1,6 @@
 # Pupilovo Supplier Hub
 
-Wtyczka WordPress/WooCommerce do integracji wielu hurtowni dropshippingowych. Wersja panelu 0.2.0. Projekt w fazie testów przedwdrożeniowych.
+Wtyczka WordPress/WooCommerce do integracji wielu hurtowni dropshippingowych. Wersja 0.3.0. Projekt w fazie testów przedwdrożeniowych.
 
 ## Zaimplementowane
 
@@ -13,6 +13,8 @@ Wtyczka WordPress/WooCommerce do integracji wielu hurtowni dropshippingowych. We
 - Reguły cenowe, aktualizacja bez duplikatów i ograniczenia nadpisywania.
 - Action Scheduler, harmonogram synchronizacji, historia i błędy.
 - Panel React, TypeScript, Vite i SCSS.
+- Wewnętrzny, idempotentny podział pozycji zamówienia według dostawcy z niezmiennym snapshotem i grupą ręcznych decyzji.
+- Statusy i historia realizacji dostawcy oraz administracyjne API tylko do odczytu. Wysyłka do dostawców nie jest jeszcze zaimplementowana.
 
 ## Uruchomienie
 
@@ -34,4 +36,4 @@ Testy PHP znajdują się w tests/. Każdy można uruchomić w kontenerze wordpre
 - Przegląd bezpieczeństwa, migracji schematu, obrazów i instalacji na czystym WordPressie.
 - Przygotowanie paczki instalacyjnej ZIP.
 
-Dokumentacja techniczna: docs/architecture.md, docs/rest-api.md i docs/implementation-plan.md.
+Dokumentacja techniczna: docs/architecture.md, docs/rest-api.md, docs/fulfillment.md i docs/implementation-plan.md.

@@ -23,6 +23,9 @@ Prefiks tabel uwzględnia `$wpdb->prefix`; poniżej użyto skrótu `psh_`.
 | `psh_category_mappings` | zatwierdzone/sugerowane decyzje mapowania do `product_cat` | supplier+category, WC term, decision |
 | `psh_product_selections` | trwały wybór konkretnych ofert | supplier+catalog product |
 | `psh_product_links` | relacja wiele ofert dostawców → jeden produkt WooCommerce | supplier+external ID, WC product |
+| `psh_fulfillment_groups` | podział zamówienia na dostawców lub grupę ręcznej decyzji | order+group key, supplier, status |
+| `psh_fulfillment_items` | niezmienny snapshot pozycji zamówienia | order item, product link, quantity, checksum |
+| `psh_fulfillment_history` | append-only historia statusów i błędów realizacji | group+created, event key |
 | `psh_pricing_rules` | priorytetowe reguły per dostawca/kategoria/produkt | supplier+scope, active+priority |
 | `psh_jobs` | wznawialne zadania importu/synchronizacji i kursory | UUID, supplier+status, type+status |
 | `psh_job_items` | idempotentne operacje jednostkowe, wynik i ograniczone snapshoty | job+product+action, job+status |

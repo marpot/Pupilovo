@@ -175,7 +175,15 @@ function Shop() {
                 onChange={handleCategoryChange}
               />
 
-              <label className="shop__sort">Sortuj<select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}><option value="default">Domyślnie</option><option value="price-asc">Cena: rosnąco</option><option value="price-desc">Cena: malejąco</option><option value="name">Nazwa</option></select></label>
+              <label className="shop__sort">
+                <span>Sortuj</span>
+                <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)}>
+                  <option value="default">Domyślnie</option>
+                  <option value="price-asc">Cena: rosnąco</option>
+                  <option value="price-desc">Cena: malejąco</option>
+                  <option value="name">Nazwa</option>
+                </select>
+              </label>
             </div>
           </div>
 

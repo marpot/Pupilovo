@@ -46,6 +46,9 @@ final class Schema {
         $canonical_products = self::table('canonical_products');
         $offers = self::table('supplier_offers');
         $history = self::table('product_history');
+        $fulfillment_groups = self::table('fulfillment_groups');
+        $fulfillment_items = self::table('fulfillment_items');
+        $fulfillment_history = self::table('fulfillment_history');
 
         $queries = [
             "CREATE TABLE {$suppliers} (
@@ -342,6 +345,68 @@ final class Schema {
                 KEY product_created (catalog_product_id,created_at),
                 KEY feed_run_id (feed_run_id),
                 KEY change_type (change_type)
+            ) {$charset};",
+            "CREATE TABLE {$fulfillment_groups} (
+                id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                uuid char(36) NOT NULL,
+                wc_order_id bigint(20) unsigned NOT NULL,
+                group_key varchar(100) NOT NULL,
+                supplier_id bigint(20) unsigned NULL,
+                supplier_name varchar(191) NULL,
+                status varchar(32) NOT NULL DEFAULT 'pending',
+                requires_manual_decision tinyint(1) NOT NULL DEFAULT 0,
+                item_count int(10) unsigned NOT NULL DEFAULT 0,
+                total_quantity decimal(19,4) NOT NULL DEFAULT 0,
+                currency char(3) NULL,
+                error_count int(10) unsigned NOT NULL DEFAULT 0,
+                last_error_code varchar(100) NULL,
+                created_at datetime NOT NULL,
+                updated_at datetime NOT NULL,
+                PRIMARY KEY  (id),
+                UNIQUE KEY uuid (uuid),
+                UNIQUE KEY order_group (wc_order_id,group_key),
+                KEY supplier_status (supplier_id,status),
+                KEY order_status (wc_order_id,status),
+                KEY manual_decision (requires_manual_decision,status)
+            ) {$charset};",
+            "CREATE TABLE {$fulfillment_items} (
+                id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                fulfillment_group_id bigint(20) unsigned NOT NULL,
+                wc_order_id bigint(20) unsigned NOT NULL,
+                wc_order_item_id bigint(20) unsigned NOT NULL,
+                wc_product_id bigint(20) unsigned NOT NULL DEFAULT 0,
+                wc_variation_id bigint(20) unsigned NOT NULL DEFAULT 0,
+                supplier_id bigint(20) unsigned NULL,
+                product_link_id bigint(20) unsigned NULL,
+                quantity decimal(19,4) NOT NULL,
+                assignment_reason varchar(64) NOT NULL,
+                snapshot longtext NOT NULL,
+                snapshot_checksum char(64) NOT NULL,
+                created_at datetime NOT NULL,
+                PRIMARY KEY  (id),
+                UNIQUE KEY order_item (wc_order_id,wc_order_item_id),
+                KEY fulfillment_group_id (fulfillment_group_id),
+                KEY supplier_id (supplier_id),
+                KEY product_link_id (product_link_id),
+                KEY wc_product_id (wc_product_id)
+            ) {$charset};",
+            "CREATE TABLE {$fulfillment_history} (
+                id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+                fulfillment_group_id bigint(20) unsigned NOT NULL,
+                event_key varchar(191) NULL,
+                event_type varchar(32) NOT NULL,
+                from_status varchar(32) NULL,
+                to_status varchar(32) NULL,
+                error_code varchar(100) NULL,
+                message text NOT NULL,
+                context longtext NULL,
+                actor_user_id bigint(20) unsigned NOT NULL DEFAULT 0,
+                created_at datetime NOT NULL,
+                PRIMARY KEY  (id),
+                UNIQUE KEY event_key (event_key),
+                KEY group_created (fulfillment_group_id,created_at),
+                KEY event_type (event_type),
+                KEY error_code (error_code)
             ) {$charset};",
         ];
 

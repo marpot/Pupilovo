@@ -2,6 +2,7 @@ export type ViewKey =
   | 'dashboard'
   | 'suppliers'
   | 'catalog'
+  | 'fulfillment'
   | 'categories'
   | 'selected'
   | 'import'
@@ -108,4 +109,93 @@ export interface FeedInspection {
   format: string;
   recordPath: string;
   persisted: false;
+}
+
+export type FulfillmentStatus =
+  | 'pending'
+  | 'ready'
+  | 'manually_approved'
+  | 'sent'
+  | 'acknowledged'
+  | 'shipped'
+  | 'delivered'
+  | 'failed'
+  | 'cancelled';
+
+export interface FulfillmentItemSnapshot {
+  orderId: number;
+  orderItemId: number;
+  productId: number;
+  variationId: number;
+  productName: string;
+  sku: string;
+  quantity: number;
+  subtotal: string;
+  subtotalTax: string;
+  total: string;
+  totalTax: string;
+  currency: string;
+  supplierId: number | null;
+  productLinkId: number | null;
+  supplierExternalId: string | null;
+  assignmentReason: string;
+  capturedAt: string;
+}
+
+export interface FulfillmentItem {
+  id: number;
+  orderItemId: number;
+  productId: number;
+  variationId: number;
+  supplierId: number | null;
+  productLinkId: number | null;
+  quantity: number;
+  assignmentReason: string;
+  snapshot: FulfillmentItemSnapshot;
+  snapshotChecksum: string;
+  createdAt: string;
+}
+
+export interface FulfillmentHistoryEntry {
+  id: number;
+  eventType: string;
+  fromStatus: FulfillmentStatus | null;
+  toStatus: FulfillmentStatus | null;
+  errorCode: string | null;
+  message: string;
+  context: Record<string, unknown>;
+  actorUserId: number;
+  createdAt: string;
+}
+
+export interface FulfillmentGroup {
+  id: number;
+  uuid: string;
+  orderId: number;
+  supplierId: number | null;
+  supplierName: string | null;
+  status: FulfillmentStatus;
+  requiresManualDecision: boolean;
+  itemCount: number;
+  totalQuantity: number;
+  currency: string | null;
+  errorCount: number;
+  lastErrorCode: string | null;
+  createdAt: string;
+  updatedAt: string;
+  items?: FulfillmentItem[];
+  history?: FulfillmentHistoryEntry[];
+}
+
+export interface PaginatedFulfillmentGroups {
+  items: FulfillmentGroup[];
+  page: number;
+  perPage: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface FulfillmentOrderDetails {
+  orderId: number;
+  groups: FulfillmentGroup[];
 }

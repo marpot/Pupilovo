@@ -41,3 +41,14 @@ Pola `credentials`, `secret`, `password`, `token` i `apiKey` są odrzucane. Dedy
 - `/sync-runs`, `/pricing-rules`, `/logs`.
 
 Mutacje katalogu i WooCommerce otrzymają klucze idempotencji oraz jawne operacje `dryRun`/`confirm`.
+
+## Etap 6A — realizacja dostawców
+
+API jest wyłącznie administracyjne i tylko do odczytu. Nie zwraca danych klienta ani sekretów integracji.
+
+| Metoda | Ścieżka | Znaczenie |
+|---|---|---|
+| `GET` | `/fulfillment/orders` | stronicowana lista grup dostawców; filtry `supplier_id`, `status`, `manual` |
+| `GET` | `/fulfillment/orders/{wc_order_id}` | grupy, snapshoty pozycji i historia dla zamówienia WooCommerce |
+
+Dozwolone statusy: `pending`, `ready`, `manually_approved`, `sent`, `acknowledged`, `shipped`, `delivered`, `failed`, `cancelled`. Etap 6A nie udostępnia endpointu wysyłki ani zmiany statusu.

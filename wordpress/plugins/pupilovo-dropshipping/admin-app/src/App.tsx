@@ -12,11 +12,13 @@ import type {
   ViewKey,
 } from './types';
 import { CategoriesView, HistoryView, ImportView, PricingView, SelectedView, SettingsView, SyncView } from './OperationalViews';
+import { FulfillmentView } from './FulfillmentView';
 
 const navigation: Array<{ key: ViewKey; label: string; short: string }> = [
   { key: 'dashboard', label: 'Dashboard', short: 'DB' },
   { key: 'suppliers', label: 'Hurtownie', short: 'HU' },
   { key: 'catalog', label: 'Katalog produktów', short: 'KP' },
+  { key: 'fulfillment', label: 'Zamówienia dropshippingowe', short: 'ZD' },
   { key: 'categories', label: 'Kategorie', short: 'KA' },
   { key: 'selected', label: 'Wybrane produkty', short: 'WP' },
   { key: 'import', label: 'Import', short: 'IM' },
@@ -104,6 +106,7 @@ export function App() {
         {view === 'dashboard' && <Dashboard />}
         {view === 'suppliers' && <Suppliers notify={notify} />}
         {view === 'catalog' && <Catalog notify={notify} />}
+        {view === 'fulfillment' && <FulfillmentView />}
         {view === 'categories' && <CategoriesView notify={notify} />}
         {view === 'selected' && <SelectedView notify={notify} />}
         {view === 'import' && <ImportView notify={notify} />}

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pupilovo Supplier Hub
  * Description: Universal supplier catalog, selection, import and synchronization foundation for WooCommerce.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Requires at least: 6.5
  * Requires PHP: 8.1
  * Requires Plugins: woocommerce
@@ -11,8 +11,8 @@
 
 defined('ABSPATH') || exit;
 
-define('PUPILOVO_SUPPLIER_HUB_VERSION', '0.2.0');
-define('PUPILOVO_SUPPLIER_HUB_SCHEMA_VERSION', '2');
+define('PUPILOVO_SUPPLIER_HUB_VERSION', '0.3.0');
+define('PUPILOVO_SUPPLIER_HUB_SCHEMA_VERSION', '3');
 define('PUPILOVO_SUPPLIER_HUB_FILE', __FILE__);
 define('PUPILOVO_SUPPLIER_HUB_DIR', plugin_dir_path(__FILE__));
 define('PUPILOVO_SUPPLIER_HUB_URL', plugin_dir_url(__FILE__));
