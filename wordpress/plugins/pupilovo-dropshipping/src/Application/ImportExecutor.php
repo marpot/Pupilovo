@@ -93,6 +93,15 @@ final class ImportExecutor {
             || !hash_equals((string) ($expected['catalogChecksum'] ?? ''), (string) $row['checksum'])) {
             throw new \RuntimeException('Produkt katalogowy zmienił się. Utwórz nowy dry-run.');
         }
+        if (($item['action'] ?? '') === 'update' && ($item['after']['managedFields'] ?? []) !== []) {
+            $active = (int) $wpdb->get_var($wpdb->prepare(
+                'SELECT COUNT(*) FROM ' . Schema::table('supplier_offers') . " WHERE supplier_id=%d AND catalog_product_id=%d AND offer_status='active'",
+                (int) $row['supplier_id'], (int) $row['id']
+            ));
+            if ($active === 0) {
+                throw new \RuntimeException('Oferta dostawcy nie jest już aktywna. Utwórz nowy dry-run.');
+            }
+        }
         return $row;
     }
 

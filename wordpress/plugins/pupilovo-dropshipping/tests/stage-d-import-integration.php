@@ -90,6 +90,17 @@ try {
     (new JobQueue())->cancel((int)$sync['job']['id']);
     $synced = wc_get_product($linked_id);
     d_check($synced->get_stock_quantity() === 4 && abs((float)$synced->get_regular_price()-132.0)<0.0001, 'manual synchronization updates only configured price and stock fields');
+    // A supplier offer disappearing after the sync plan was created must not update WooCommerce.
+    $stale = (new SyncManager())->enqueue($supplier_id, $user_id, ['price','stock']);
+    $stale_job_id = (int) $stale['job']['id'];
+    $wpdb->update(Schema::table('supplier_offers'), ['offer_status'=>'missing'], ['supplier_id'=>$supplier_id,'external_id'=>'safe-1']);
+    $price_before = wc_get_product($linked_id)->get_regular_price();
+    $stock_before = wc_get_product($linked_id)->get_stock_quantity();
+    (new ImportExecutor())->execute($stale_job_id, $user_id);
+    $stale_result = (new \Pupilovo\SupplierHub\Infrastructure\Repository\ImportJobRepository())->get($stale_job_id);
+    $after_stale = wc_get_product($linked_id);
+    d_check($stale_result['succeededItems'] === 0 && $stale_result['failedItems'] === 1, 'stale synchronization plan refuses a missing supplier offer');
+    d_check($after_stale->get_regular_price() === $price_before && $after_stale->get_stock_quantity() === $stock_before, 'stale synchronization leaves WooCommerce price and stock untouched');
     echo $checks . ' Stage D integration checks passed.' . PHP_EOL;
 } finally {
     global $wpdb;
