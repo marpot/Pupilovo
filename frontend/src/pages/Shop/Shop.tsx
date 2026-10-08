@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { getProductCategories, getProducts } from "@/api/woocommerce";
 import CategoryFilter from "@/components/CategoryFilter/CategoryFilter";
-import ProductCard from "@/components/ProductCard/ProductCard";
+import ProductCard, { ProductCardSkeleton } from "@/components/ProductCard/ProductCard";
 import type { Product, ProductCategory } from "@/types/woocommerce";
 import { canAutomaticallyNavigateTo } from "@/utils/sectionNavigation";
 
@@ -188,8 +188,10 @@ function Shop() {
           </div>
 
           {isLoading && (
-            <div className="shop__loading" role="status">
-              Ładowanie produktów...
+            <div className="shop__grid" role="status" aria-label="Ładowanie produktów">
+              {Array.from({ length: 8 }, (_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
             </div>
           )}
 

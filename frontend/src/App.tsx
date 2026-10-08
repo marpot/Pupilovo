@@ -8,6 +8,7 @@ import {
 
 import Header from '@/components/Header/Header'
 import Hero from '@/components/Hero/Hero'
+import HomeDiscovery from '@/components/HomeDiscovery/HomeDiscovery'
 import About from '@/pages/About/About'
 import Account from '@/pages/Account/Account'
 import Cart from '@/pages/Cart/Cart'
@@ -59,6 +60,7 @@ function Home() {
   return (
     <>
       <Hero />
+      <HomeDiscovery />
       <About />
       <Shop />
     </>

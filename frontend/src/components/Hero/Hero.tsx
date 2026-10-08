@@ -15,6 +15,13 @@ function Hero() {
     })
   }
 
+  const handleCategoriesClick = () => {
+    document.getElementById('home-categories')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+
   return (
     <section id="home" className="hero">
       <div className="hero__container">
@@ -22,14 +29,19 @@ function Hero() {
           <span className="hero__eyebrow">Pupilovo — dla Twojego pupila</span>
 
           <h1 className="hero__title">
-            Wszystko, czego potrzebuje
-            <span> Twój pupil.</span>
+            Dobry wybór dla pupila.
+            <span>Prostsze zakupy dla Ciebie.</span>
           </h1>
 
           <p className="hero__description">
-            Karma, akcesoria i produkty dla zwierząt w jednym miejscu.
-            Wybieramy to, co naprawdę potrzebne.
+            Odkrywaj karmy, akcesoria i produkty do codziennej opieki
+            w przejrzystym katalogu z aktualną informacją o dostępności.
           </p>
+
+          <ul className="hero__benefits" aria-label="Korzyści zakupów w Pupilovo">
+            <li>Oferta uporządkowana według potrzeb zwierząt</li>
+            <li>Cena i dostępność widoczne przed dodaniem do koszyka</li>
+          </ul>
 
           <div className="hero__actions">
             <Link
@@ -37,8 +49,11 @@ function Hero() {
               onClick={handleShopClick}
               className="hero__button hero__button--primary"
             >
-              Przejdź do sklepu
+              Zobacz produkty
             </Link>
+            <button type="button" className="hero__button hero__button--secondary" onClick={handleCategoriesClick}>
+              Wybierz kategorię
+            </button>
           </div>
         </div>
 
@@ -47,7 +62,7 @@ function Hero() {
           <img src="/assets/hero.png" alt="Pupilovo" />
         </div>
 
-        <ScrollArrow targetId="about" />
+        <ScrollArrow targetId="home-categories" />
       </div>
     </section>
   )
