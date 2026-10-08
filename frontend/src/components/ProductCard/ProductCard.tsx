@@ -25,6 +25,8 @@ function ProductCard({
   available = true,
 }: ProductCardProps) {
   const [isAdding, setIsAdding] = useState(false)
+  const [cartMessage, setCartMessage] = useState<string | null>(null)
+  const [cartError, setCartError] = useState(false)
 
   const handleAddToCart = async () => {
     if (!available || isAdding) {
@@ -33,13 +35,15 @@ function ProductCard({
 
     try {
       setIsAdding(true)
+      setCartMessage(null)
+      setCartError(false)
 
       await addCartItem(id, 1)
+      setCartMessage('Dodano do koszyka.')
     } catch (error) {
-      console.error(
-        'Nie udało się dodać produktu do koszyka:',
-        error,
-      )
+      console.error('Nie udało się dodać produktu do koszyka:', error)
+      setCartError(true)
+      setCartMessage('Nie udało się dodać produktu. Spróbuj ponownie.')
     } finally {
       setIsAdding(false)
     }
@@ -85,6 +89,11 @@ function ProductCard({
                 : 'Dodaj do koszyka'}
           </button>
         </div>
+        {cartMessage && (
+          <p className={`product-card__cart-message${cartError ? ' product-card__cart-message--error' : ''}`} role={cartError ? 'alert' : 'status'}>
+            {cartMessage}
+          </p>
+        )}
       </div>
     </article>
   )

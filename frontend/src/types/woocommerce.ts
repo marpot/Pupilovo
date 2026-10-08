@@ -47,6 +47,7 @@ export interface Product {
   slug: string
   name: string
   price: string
+  priceValue: number
   image: string
   images: Array<{ src: string; alt: string }>
   description: string

@@ -2,18 +2,16 @@ import '@/components/Hero/Hero.scss'
 import type { MouseEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ScrollArrow from '@/components/ScrollArrow/ScrollArrow'
+import { beginSectionNavigation } from '@/utils/sectionNavigation'
 
 function Hero() {
   const navigate = useNavigate()
 
   const handleShopClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
-    navigate('/shop')
-    requestAnimationFrame(() => {
-      document.getElementById('shop')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+    beginSectionNavigation('/shop')
+    navigate('/shop', {
+      state: { sectionNavigation: true },
     })
   }
 

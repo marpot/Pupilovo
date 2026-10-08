@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useRef,
   useState,
   type MouseEvent,
 } from 'react'
@@ -10,12 +11,69 @@ import {
   getCart,
 } from '@/api/cart'
 import ProductSearch from '@/components/ProductSearch/ProductSearch'
+import { beginSectionNavigation } from '@/utils/sectionNavigation'
 
 import '@/components/Header/Header.scss'
+
+const getProductCountLabel = (count: number) => {
+  const absoluteCount = Math.abs(Math.trunc(count))
+  const lastDigit = absoluteCount % 10
+  const lastTwoDigits = absoluteCount % 100
+
+  if (absoluteCount === 1) return 'produkt'
+
+  if (
+    lastDigit >= 2 &&
+    lastDigit <= 4 &&
+    (lastTwoDigits < 12 || lastTwoDigits > 14)
+  ) {
+    return 'produkty'
+  }
+
+  return 'produktów'
+}
 
 function Header() {
   const navigate = useNavigate()
   const [cartCount, setCartCount] = useState(0)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const navigationRef = useRef<HTMLElement>(null)
+
+  const closeMenu = () => setIsMenuOpen(false)
+
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const previousOverflow = document.body.style.overflow
+
+    document.body.style.overflow = 'hidden'
+    navigationRef.current
+      ?.querySelector<HTMLAnchorElement>('a')
+      ?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return
+
+      setIsMenuOpen(false)
+      menuButtonRef.current?.focus()
+    }
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener('keydown', handleKeyDown)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isMenuOpen])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -69,11 +127,10 @@ function Header() {
     event: MouseEvent<HTMLAnchorElement>,
   ) => {
     event.preventDefault()
-    navigate('/')
-
-    document.scrollingElement?.scrollTo({
-      top: 0,
-      behavior: 'smooth',
+    closeMenu()
+    beginSectionNavigation('/')
+    navigate('/', {
+      state: { sectionNavigation: true },
     })
   }
 
@@ -81,13 +138,10 @@ function Header() {
     event: MouseEvent<HTMLAnchorElement>,
   ) => {
     event.preventDefault()
-    navigate('/shop')
-
-    requestAnimationFrame(() => {
-      document.getElementById('shop')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+    closeMenu()
+    beginSectionNavigation('/shop')
+    navigate('/shop', {
+      state: { sectionNavigation: true },
     })
   }
 
@@ -95,13 +149,10 @@ function Header() {
     event: MouseEvent<HTMLAnchorElement>,
   ) => {
     event.preventDefault()
-    navigate('/about')
-
-    requestAnimationFrame(() => {
-      document.getElementById('about')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      })
+    closeMenu()
+    beginSectionNavigation('/about')
+    navigate('/about', {
+      state: { sectionNavigation: true },
     })
   }
 
@@ -117,19 +168,21 @@ function Header() {
         </Link>
 
         <nav
-          className="header__nav"
+          ref={navigationRef}
+          id="main-navigation"
+          className={`header__nav${isMenuOpen ? ' header__nav--open' : ''}`}
           aria-label="Główna nawigacja"
         >
           <Link to="/" onClick={handleHomeClick}>
             Strona główna
           </Link>
 
-          <Link to="/about" onClick={handleAboutClick}>
-            O nas
-          </Link>
-
           <Link to="/shop" onClick={handleShopClick}>
             Sklep
+          </Link>
+
+          <Link to="/about" onClick={handleAboutClick}>
+            O nas
           </Link>
         </nav>
 
@@ -144,7 +197,7 @@ function Header() {
           <Link
             to="/cart"
             className="header__cart"
-            aria-label={`Koszyk, ${cartCount} produktów`}
+            aria-label={`Koszyk, ${cartCount} ${getProductCountLabel(cartCount)}`}
           >
             <span
               className="header__cart-icon"
@@ -162,7 +215,35 @@ function Header() {
             <span>Koszyk</span>
           </Link>
         </div>
+
+        <button
+          ref={menuButtonRef}
+          type="button"
+          className="header__menu-toggle"
+          aria-label={
+            isMenuOpen ? 'Zamknij menu' : 'Otwórz menu'
+          }
+          aria-controls="main-navigation"
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
       </div>
+
+      {isMenuOpen && (
+        <button
+          type="button"
+          className="header__menu-backdrop"
+          aria-label="Zamknij menu"
+          onClick={() => {
+            closeMenu()
+            menuButtonRef.current?.focus()
+          }}
+        />
+      )}
     </header>
   )
 }
