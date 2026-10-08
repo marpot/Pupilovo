@@ -53,6 +53,7 @@ const mapProduct = (
   name: product.name,
   price: formatPrice(product),
   image: product.images[0]?.src || '/assets/hero.png',
+  images: product.images.map((image) => ({ src: image.src, alt: image.alt || product.name })),
   description: stripHtml(
     product.short_description || product.description,
   ),

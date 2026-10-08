@@ -48,6 +48,7 @@ export interface Product {
   name: string
   price: string
   image: string
+  images: Array<{ src: string; alt: string }>
   description: string
   category: string
   available: boolean

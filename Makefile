@@ -1,4 +1,4 @@
-.PHONY: help dev backend frontend docker-full stop restart build install status logs wp-shell db-shell
+.PHONY: help dev backend frontend docker-full stop restart build install supplier-hub-build supplier-hub-test status logs wp-shell db-shell
 
 help:
 	@echo "Pupilovo"
@@ -12,6 +12,8 @@ help:
 	@echo "Frontend:"
 	@echo "  make install      Instalacja zależności npm"
 	@echo "  make build        Production build frontendu"
+	@echo "  make supplier-hub-build  Lint i build panelu Supplier Hub"
+	@echo "  make supplier-hub-test   Test integracyjny Etapu A w Dockerze"
 	@echo ""
 	@echo "Docker:"
 	@echo "  make stop         Zatrzymaj całe środowisko"
@@ -44,6 +46,12 @@ install:
 
 build:
 	cd frontend && npm run build
+
+supplier-hub-build:
+	cd wordpress/plugins/pupilovo-dropshipping/admin-app && npm run lint && npm run build
+
+supplier-hub-test:
+	docker compose exec -T wordpress php /var/www/html/wp-content/plugins/pupilovo-dropshipping/tests/stage-a-integration.php
 
 status:
 	docker compose --profile full ps

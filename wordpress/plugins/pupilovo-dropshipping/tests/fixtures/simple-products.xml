@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <product>
+    <id>supplier-101</id>
+    <sku>DOG-BOWL-01</sku>
+    <ean>5901234123457</ean>
+    <name>Miska testowa</name>
+    <price>24.90</price>
+    <stock>12</stock>
+  </product>
+  <product>
+    <id>supplier-102</id>
+    <sku>CAT-TOY-02</sku>
+    <ean>5901234123464</ean>
+    <name>Zabawka testowa</name>
+    <price>15.50</price>
+    <stock>0</stock>
+  </product>
+</catalog>

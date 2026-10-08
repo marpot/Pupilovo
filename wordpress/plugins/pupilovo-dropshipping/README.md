@@ -1,7 +1,37 @@
-# Pupilovo Dropshipping
+# Pupilovo Supplier Hub
 
-To jest wyłącznie szkielet przyszłej integracji. Żaden dostawca ani fikcyjna synchronizacja nie są podłączone.
+Wtyczka WordPress/WooCommerce do integracji wielu hurtowni dropshippingowych. Wersja panelu 0.2.0. Projekt w fazie testów przedwdrożeniowych.
 
-Adapter implementuje `Pupilovo_Dropshipping_Adapter`: pobiera rekordy dostawcy i mapuje je do pól SKU, nazwa, cena, stock, opis, zdjęcia i status. W przyszłości można dodać adapter REST, XML lub CSV, a następnie osobno wywoływać mapowanie i zapis do WooCommerce. WooCommerce pozostaje źródłem prawdy dla katalogu sklepu.
+## Zaimplementowane
 
-Po wyborze dostawcy należy ustalić autoryzację, limity, harmonogram, mapowanie kategorii i wariantów, zasady cen i stanów magazynowych, obsługę błędów oraz testy synchronizacji. Nie twórz synchronizacji bez konkretnej specyfikacji dostawcy.
+- Profile dostawców, źródła danych i zabezpieczone dane uwierzytelniające.
+- Odczyt XML, CSV, TSV, JSON, mapowanie pól i walidacja źródeł URL.
+- Katalog ofert dostawców, historia zmian i zabezpieczenie przed niepełnymi feedami.
+- Dopasowywanie kategorii z ręcznym zatwierdzaniem.
+- Wybór konkretnych produktów do importu.
+- Podgląd i zatwierdzanie importu, produkty proste i wariantowe jako szkice WooCommerce.
+- Reguły cenowe, aktualizacja bez duplikatów i ograniczenia nadpisywania.
+- Action Scheduler, harmonogram synchronizacji, historia i błędy.
+- Panel React, TypeScript, Vite i SCSS.
+
+## Uruchomienie
+
+Z katalogu głównego repozytorium: docker compose up -d mysql wordpress.
+Aktywuj Pupilovo Supplier Hub w panelu WordPress.
+
+## Testy
+
+Zbuduj panel poleceniami npm run build i npm run lint w katalogu admin-app.
+Testy PHP znajdują się w tests/. Każdy można uruchomić w kontenerze wordpress poleceniem php /var/www/html/wp-content/plugins/pupilovo-dropshipping/tests/NAZWA.php.
+
+8 października 2026: wszystkie 10 zestawów testowych przeszło poprawnie, łącznie 118 kontroli PASS, na lokalnym MySQL na SSD.
+
+## Pozostało przed produkcją
+
+- Rzeczywisty test UX panelu w przeglądarce.
+- Import przykładowego feedu prawdziwej hurtowni i ocena mapowania kategorii.
+- Testy błędów sieci, ponawiania zadań i harmonogramu.
+- Przegląd bezpieczeństwa, migracji schematu, obrazów i instalacji na czystym WordPressie.
+- Przygotowanie paczki instalacyjnej ZIP.
+
+Dokumentacja techniczna: docs/architecture.md, docs/rest-api.md i docs/implementation-plan.md.
