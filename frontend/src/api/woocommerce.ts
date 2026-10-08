@@ -52,6 +52,7 @@ const mapProduct = (
   slug: product.slug,
   name: product.name,
   price: formatPrice(product),
+  priceValue: Number(product.prices.price) / 10 ** product.prices.currency_minor_unit,
   image: product.images[0]?.src || '/assets/hero.png',
   images: product.images.map((image) => ({ src: image.src, alt: image.alt || product.name })),
   description: stripHtml(
@@ -92,8 +93,16 @@ export const getProductCategories = async (
     signal,
   )
 
-  return categories.map((category) => ({
-    name: category.name,
-    value: category.slug,
-  }))
+  return categories
+    .filter(
+      (category) =>
+        category.slug.toLocaleLowerCase('en-US') !==
+          'uncategorized' &&
+        category.name.trim().toLocaleLowerCase('en-US') !==
+          'uncategorized',
+    )
+    .map((category) => ({
+      name: category.name,
+      value: category.slug,
+    }))
 }

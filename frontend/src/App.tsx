@@ -22,12 +22,30 @@ function Home() {
   const location = useLocation()
 
   useLayoutEffect(() => {
-    if (
-      location.pathname === '/shop' &&
-      location.hash === '#shop'
-    ) {
-      document.getElementById('shop')?.scrollIntoView({
-        behavior: 'instant',
+    const isSectionNavigation = Boolean(
+      location.state?.sectionNavigation,
+    )
+    const behavior = isSectionNavigation ? 'smooth' : 'instant'
+
+    if (location.pathname === '/') {
+      document.scrollingElement?.scrollTo({
+        top: 0,
+        behavior,
+      })
+
+      return
+    }
+
+    const sectionId =
+      location.pathname === '/shop'
+        ? 'shop'
+        : location.pathname === '/about'
+          ? 'about'
+          : null
+
+    if (sectionId) {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior,
         block: 'start',
       })
     }
@@ -35,6 +53,7 @@ function Home() {
     location.pathname,
     location.hash,
     location.key,
+    location.state,
   ])
 
   return (

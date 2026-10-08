@@ -100,6 +100,18 @@
     white-space: nowrap;
   }
 
+  &__cart-message {
+    margin: 10px 0 0;
+    color: #256628;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+
+    &--error {
+      color: #b42318;
+    }
+  }
+
   &__button {
     padding: 10px 15px;
 

@@ -5,6 +5,7 @@ import { getProductCategories, getProducts } from "@/api/woocommerce";
 import CategoryFilter from "@/components/CategoryFilter/CategoryFilter";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import type { Product, ProductCategory } from "@/types/woocommerce";
+import { canAutomaticallyNavigateTo } from "@/utils/sectionNavigation";
 
 import "@/pages/Shop/Shop.scss";
 
@@ -88,7 +89,12 @@ function Shop() {
         const activationOffset = window.innerHeight * 0.3;
         const isShopActive = entry.boundingClientRect.top <= activationOffset;
 
-        if (entry.isIntersecting && isShopActive && isSectionRoute) {
+        if (
+          entry.isIntersecting &&
+          isShopActive &&
+          isSectionRoute &&
+          canAutomaticallyNavigateTo("/shop")
+        ) {
           navigate(
             {
               pathname: "/shop",
@@ -153,7 +159,7 @@ function Shop() {
     const matchesSearch = searchWords.every((word) => text.includes(word));
 
     return matchesCategory && matchesSearch;
-  }).sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name, 'pl') : sort === 'price-asc' || sort === 'price-desc' ? (Number(a.price.replace(/[^0-9,]/g, '').replace(',', '.')) - Number(b.price.replace(/[^0-9,]/g, '').replace(',', '.'))) * (sort === 'price-desc' ? -1 : 1) : 0);
+  }).sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name, 'pl') : sort === 'price-asc' || sort === 'price-desc' ? (a.priceValue - b.priceValue) * (sort === 'price-desc' ? -1 : 1) : 0);
 
   return (
     <section ref={shopRef} id="shop" className="shop">

@@ -5,6 +5,7 @@ import AboutHero from '@/components/AboutHero/AboutHero'
 import AboutStory from '@/components/AboutStory/AboutStory'
 import AboutValues from '@/components/AboutValues/AboutValues'
 import AboutCta from '@/components/AboutCta/AboutCta'
+import { canAutomaticallyNavigateTo } from '@/utils/sectionNavigation'
 
 function About() {
   const location = useLocation()
@@ -35,7 +36,11 @@ function About() {
         (shopElement?.getBoundingClientRect().top ?? Infinity) >
           activationOffset
 
-      if (isAboutActive && isSectionRoute) {
+      if (
+        isAboutActive &&
+        isSectionRoute &&
+        canAutomaticallyNavigateTo('/about')
+      ) {
         navigate({ pathname: '/about', search: searchRef.current }, {
           replace: true,
           state: { aboutVisible: true },
