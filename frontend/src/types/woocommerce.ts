@@ -40,6 +40,13 @@ export interface WooCommerceCategory {
   name: string
   slug: string
   count: number
+  parent: number
+  image?: {
+    id: number
+    src: string
+    thumbnail: string
+    alt: string
+  } | null
 }
 
 export interface Product {
@@ -56,8 +63,12 @@ export interface Product {
 }
 
 export interface ProductCategory {
+  id: number
   name: string
   value: string
+  count: number
+  parent: number
+  image: string | null
 }
 
 export interface WooCommerceCartItemImage {

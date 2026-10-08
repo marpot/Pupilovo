@@ -24,6 +24,7 @@ function ProductCard({
   description,
   available = true,
 }: ProductCardProps) {
+  const [imageLoaded, setImageLoaded] = useState(false)
   const [isAdding, setIsAdding] = useState(false)
   const [cartMessage, setCartMessage] = useState<string | null>(null)
   const [cartError, setCartError] = useState(false)
@@ -50,12 +51,14 @@ function ProductCard({
   }
 
   return (
-    <article className="product-card">
+    <article className={`product-card${available ? '' : ' product-card--unavailable'}`}>
       <Link
         to={`/product/${slug}`}
-        className="product-card__image"
+        className={`product-card__image${imageLoaded ? ' is-loaded' : ''}`}
+        aria-label={`Zobacz produkt: ${name}`}
       >
-        <img src={image} alt={name} />
+        <span className="product-card__image-loader" aria-hidden="true" />
+        <img src={image} alt={name} loading="lazy" onLoad={() => setImageLoaded(true)} />
       </Link>
 
       <div className="product-card__content">
@@ -71,6 +74,11 @@ function ProductCard({
           </p>
         )}
 
+        <p className={`product-card__availability${available ? '' : ' product-card__availability--unavailable'}`}>
+          <span aria-hidden="true" />
+          {available ? 'Dostępny' : 'Aktualnie niedostępny'}
+        </p>
+
         <div className="product-card__footer">
           <span className="product-card__price">
             {price}
@@ -81,6 +89,7 @@ function ProductCard({
             disabled={!available || isAdding}
             className="product-card__button"
             onClick={handleAddToCart}
+            aria-busy={isAdding}
           >
             {!available
               ? 'Niedostępny'
@@ -96,6 +105,20 @@ function ProductCard({
         )}
       </div>
     </article>
+  )
+}
+
+export function ProductCardSkeleton() {
+  return (
+    <div className="product-card product-card--skeleton" aria-hidden="true">
+      <span className="product-card__skeleton-image" />
+      <div className="product-card__content">
+        <span className="product-card__skeleton-line product-card__skeleton-line--title" />
+        <span className="product-card__skeleton-line" />
+        <span className="product-card__skeleton-line product-card__skeleton-line--short" />
+        <span className="product-card__skeleton-button" />
+      </div>
+    </div>
   )
 }
 

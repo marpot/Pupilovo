@@ -73,6 +73,17 @@ export const getProducts = async (
   return products.map(mapProduct)
 }
 
+export const getFeaturedProducts = async (
+  signal?: AbortSignal,
+): Promise<Product[]> => {
+  const products = await request<WooCommerceProduct[]>(
+    '/products?featured=true&per_page=4',
+    signal,
+  )
+
+  return products.map(mapProduct)
+}
+
 export const getProductBySlug = async (
   slug: string,
   signal?: AbortSignal,
@@ -102,7 +113,11 @@ export const getProductCategories = async (
           'uncategorized',
     )
     .map((category) => ({
+      id: category.id,
       name: category.name,
       value: category.slug,
+      count: category.count,
+      parent: category.parent,
+      image: category.image?.src || null,
     }))
 }
