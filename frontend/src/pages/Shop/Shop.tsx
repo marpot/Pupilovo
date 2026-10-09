@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { getProductCategories, getProducts } from "@/api/woocommerce";
 import CategoryFilter from "@/components/CategoryFilter/CategoryFilter";
 import ProductCard, { ProductCardSkeleton } from "@/components/ProductCard/ProductCard";
 import type { Product, ProductCategory } from "@/types/woocommerce";
-import { canAutomaticallyNavigateTo } from "@/utils/sectionNavigation";
 
 import "@/pages/Shop/Shop.scss";
 
@@ -18,23 +17,12 @@ const normalizeSearch = (value: string) =>
 
 function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const shopRef = useRef<HTMLElement>(null);
-  const pathnameRef = useRef(location.pathname);
-  const searchRef = useRef(location.search);
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<ProductCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sort, setSort] = useState<'default' | 'price-asc' | 'price-desc' | 'name'>('default');
-
-  useEffect(() => {
-    pathnameRef.current = location.pathname;
-    searchRef.current = location.search;
-  }, [location.pathname, location.search]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -73,51 +61,6 @@ function Shop() {
 
     return () => controller.abort();
   }, []);
-
-  useEffect(() => {
-    const shopElement = shopRef.current;
-
-    if (!shopElement) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isSectionRoute =
-          pathnameRef.current === "/" || pathnameRef.current === "/about";
-
-        const activationOffset = window.innerHeight * 0.3;
-        const isShopActive = entry.boundingClientRect.top <= activationOffset;
-
-        if (
-          entry.isIntersecting &&
-          isShopActive &&
-          isSectionRoute &&
-          canAutomaticallyNavigateTo("/shop")
-        ) {
-          navigate(
-            {
-              pathname: "/shop",
-              search: searchRef.current,
-            },
-            {
-              replace: true,
-              state: { shopVisible: true },
-            },
-          );
-        }
-      },
-      {
-        root: null,
-        rootMargin: "-92px 0px -70% 0px",
-        threshold: 0,
-      },
-    );
-
-    observer.observe(shopElement);
-
-    return () => observer.disconnect();
-  }, [navigate]);
 
   const selectedCategory = searchParams.get("category") || "all";
   const query = searchParams.get("q")?.trim() || "";
@@ -162,7 +105,7 @@ function Shop() {
   }).sort((a, b) => sort === 'name' ? a.name.localeCompare(b.name, 'pl') : sort === 'price-asc' || sort === 'price-desc' ? (a.priceValue - b.priceValue) * (sort === 'price-desc' ? -1 : 1) : 0);
 
   return (
-    <section ref={shopRef} id="shop" className="shop">
+    <section id="shop" className="shop">
       <section className="shop__products">
         <div className="shop__container">
           <div className="shop__toolbar">

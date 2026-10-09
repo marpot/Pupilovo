@@ -2,16 +2,14 @@ import {
   useEffect,
   useRef,
   useState,
-  type MouseEvent,
 } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import {
   CART_UPDATED_EVENT,
   getCart,
 } from '@/api/cart'
 import ProductSearch from '@/components/ProductSearch/ProductSearch'
-import { beginSectionNavigation } from '@/utils/sectionNavigation'
 
 import '@/components/Header/Header.scss'
 
@@ -34,7 +32,6 @@ const getProductCountLabel = (count: number) => {
 }
 
 function Header() {
-  const navigate = useNavigate()
   const [cartCount, setCartCount] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuButtonRef = useRef<HTMLButtonElement>(null)
@@ -123,39 +120,6 @@ function Header() {
     }
   }, [])
 
-  const handleHomeClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-  ) => {
-    event.preventDefault()
-    closeMenu()
-    beginSectionNavigation('/')
-    navigate('/', {
-      state: { sectionNavigation: true },
-    })
-  }
-
-  const handleShopClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-  ) => {
-    event.preventDefault()
-    closeMenu()
-    beginSectionNavigation('/shop')
-    navigate('/shop', {
-      state: { sectionNavigation: true },
-    })
-  }
-
-  const handleAboutClick = (
-    event: MouseEvent<HTMLAnchorElement>,
-  ) => {
-    event.preventDefault()
-    closeMenu()
-    beginSectionNavigation('/about')
-    navigate('/about', {
-      state: { sectionNavigation: true },
-    })
-  }
-
   return (
     <header className="header">
       <div className="header__container">
@@ -173,15 +137,15 @@ function Header() {
           className={`header__nav${isMenuOpen ? ' header__nav--open' : ''}`}
           aria-label="Główna nawigacja"
         >
-          <Link to="/" onClick={handleHomeClick}>
+          <Link to="/" onClick={closeMenu}>
             Strona główna
           </Link>
 
-          <Link to="/shop" onClick={handleShopClick}>
+          <Link to="/shop" onClick={closeMenu}>
             Sklep
           </Link>
 
-          <Link to="/about" onClick={handleAboutClick}>
+          <Link to="/about" onClick={closeMenu}>
             O nas
           </Link>
         </nav>

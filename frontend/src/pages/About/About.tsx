@@ -1,60 +1,11 @@
-import { useEffect, useRef } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-
 import AboutHero from '@/components/AboutHero/AboutHero'
 import AboutStory from '@/components/AboutStory/AboutStory'
 import AboutValues from '@/components/AboutValues/AboutValues'
 import AboutCta from '@/components/AboutCta/AboutCta'
-import { canAutomaticallyNavigateTo } from '@/utils/sectionNavigation'
 
 function About() {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const aboutRef = useRef<HTMLElement>(null)
-  const pathnameRef = useRef(location.pathname)
-  const searchRef = useRef(location.search)
-
-  useEffect(() => {
-    pathnameRef.current = location.pathname
-    searchRef.current = location.search
-  }, [location.pathname, location.search])
-
-  useEffect(() => {
-    const aboutElement = aboutRef.current
-
-    if (!aboutElement) {
-      return
-    }
-
-    const updateActiveSection = () => {
-      const isSectionRoute =
-        pathnameRef.current === '/' || pathnameRef.current === '/shop'
-      const shopElement = document.getElementById('shop')
-      const activationOffset = window.innerHeight * 0.3
-      const isAboutActive =
-        aboutElement.getBoundingClientRect().top <= activationOffset &&
-        (shopElement?.getBoundingClientRect().top ?? Infinity) >
-          activationOffset
-
-      if (
-        isAboutActive &&
-        isSectionRoute &&
-        canAutomaticallyNavigateTo('/about')
-      ) {
-        navigate({ pathname: '/about', search: searchRef.current }, {
-          replace: true,
-          state: { aboutVisible: true },
-        })
-      }
-    }
-
-    window.addEventListener('scroll', updateActiveSection, { passive: true })
-
-    return () => window.removeEventListener('scroll', updateActiveSection)
-  }, [navigate])
-
   return (
-    <main ref={aboutRef} id="about" className="about">
+    <main id="about" className="about">
       <AboutHero />
       <AboutStory />
       <AboutValues />

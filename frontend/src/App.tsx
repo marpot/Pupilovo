@@ -20,63 +20,46 @@ import InfoPage from '@/pages/Info/Info'
 import Footer from '@/components/Footer/Footer'
 
 function Home() {
-  const location = useLocation()
-
-  useLayoutEffect(() => {
-    const isSectionNavigation = Boolean(
-      location.state?.sectionNavigation,
-    )
-    const behavior = isSectionNavigation ? 'smooth' : 'instant'
-
-    if (location.pathname === '/') {
-      document.scrollingElement?.scrollTo({
-        top: 0,
-        behavior,
-      })
-
-      return
-    }
-
-    const sectionId =
-      location.pathname === '/shop'
-        ? 'shop'
-        : location.pathname === '/about'
-          ? 'about'
-          : null
-
-    if (sectionId) {
-      document.getElementById(sectionId)?.scrollIntoView({
-        behavior,
-        block: 'start',
-      })
-    }
-  }, [
-    location.pathname,
-    location.hash,
-    location.key,
-    location.state,
-  ])
-
   return (
     <>
       <Hero />
       <HomeDiscovery />
-      <About />
-      <Shop />
     </>
   )
+}
+
+function RouteScroll() {
+  const { hash, pathname } = useLocation()
+
+  useLayoutEffect(() => {
+    if (hash) {
+      const target = document.getElementById(
+        decodeURIComponent(hash.slice(1)),
+      )
+
+      if (target) {
+        target.scrollIntoView({ block: 'start' })
+        return
+      }
+    }
+
+    window.scrollTo({ top: 0, left: 0 })
+  }, [hash, pathname])
+
+  return null
 }
 
 function App() {
   return (
     <BrowserRouter>
       <div className="app">
+        <RouteScroll />
         <Header />
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/shop" element={<Home />} />
-          <Route path="/about" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/about" element={<About />} />
           <Route path="/account" element={<Account />} />
           <Route path="/cart" element={<Cart />} />
 

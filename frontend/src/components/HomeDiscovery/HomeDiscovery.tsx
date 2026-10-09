@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { getFeaturedProducts, getProductCategories } from '@/api/woocommerce'
 import ProductCard, { ProductCardSkeleton } from '@/components/ProductCard/ProductCard'
 import type { Product, ProductCategory } from '@/types/woocommerce'
-import { beginSectionNavigation } from '@/utils/sectionNavigation'
 
 import '@/components/HomeDiscovery/HomeDiscovery.scss'
 
@@ -72,9 +71,7 @@ function HomeDiscovery() {
                 <Link
                   key={category.id}
                   to={`/shop?category=${encodeURIComponent(category.value)}`}
-                  state={{ sectionNavigation: true }}
                   className={`home-category home-category--tone-${index % 4}${visualKind ? ` home-category--${visualKind}` : ''}`}
-                  onClick={() => beginSectionNavigation('/shop')}
                 >
                   <span className="home-category__visual" aria-hidden="true">
                     {image
@@ -102,7 +99,7 @@ function HomeDiscovery() {
             <h2 id="home-featured-title">Polecane produkty</h2>
             <p>Produkty oznaczone jako polecane w aktualnym katalogu sklepu.</p>
           </div>
-          <Link to="/shop" state={{ sectionNavigation: true }} onClick={() => beginSectionNavigation('/shop')}>Zobacz cały katalog <span aria-hidden="true">→</span></Link>
+          <Link to="/shop">Zobacz cały katalog <span aria-hidden="true">→</span></Link>
         </div>
 
         {featuredLoading && <div className="home-featured__grid" role="status" aria-label="Ładowanie polecanych produktów">{Array.from({ length: 4 }, (_, index) => <ProductCardSkeleton key={index} />)}</div>}
@@ -143,7 +140,7 @@ function InlineState({ title, message, action = false }: { title?: string; messa
     <div className="home-inline-state" role="status">
       {title && <h3>{title}</h3>}
       <p>{message}</p>
-      {action && <Link to="/shop" state={{ sectionNavigation: true }} onClick={() => beginSectionNavigation('/shop')}>Przejdź do katalogu</Link>}
+      {action && <Link to="/shop">Przejdź do katalogu</Link>}
     </div>
   )
 }

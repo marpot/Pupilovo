@@ -1,20 +1,8 @@
 import '@/components/Hero/Hero.scss'
-import type { MouseEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ScrollArrow from '@/components/ScrollArrow/ScrollArrow'
-import { beginSectionNavigation } from '@/utils/sectionNavigation'
 
 function Hero() {
-  const navigate = useNavigate()
-
-  const handleShopClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault()
-    beginSectionNavigation('/shop')
-    navigate('/shop', {
-      state: { sectionNavigation: true },
-    })
-  }
-
   const handleCategoriesClick = () => {
     document.getElementById('home-categories')?.scrollIntoView({
       behavior: 'smooth',
@@ -46,7 +34,6 @@ function Hero() {
           <div className="hero__actions">
             <Link
               to="/shop"
-              onClick={handleShopClick}
               className="hero__button hero__button--primary"
             >
               Zobacz produkty
